@@ -1,1 +1,3 @@
 develop branch입니다.
+
+노트북에서 develop branch 사용.
