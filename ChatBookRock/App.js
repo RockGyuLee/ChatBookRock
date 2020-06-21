@@ -47,7 +47,7 @@ const App: () => React$Node = () => {
       <View style={ styles.container}>
       <TextInput
         style={{justifyContent: 'center', alignItems: 'center' , borderColor: 'black', borderWidth: 1, margin : 50}}
-        placeholder="주기 설정"
+        placeholder="주기 설정 notebook"
         textAlign={'center'}
         onChangeText={text => setText(text)}
         defaultValue={text}
