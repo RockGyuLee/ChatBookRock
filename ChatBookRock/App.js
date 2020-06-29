@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
   SafeAreaView,
@@ -26,6 +26,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import {addFood, getFoods} from './api/bookApi';
+
 const Container = styled.Text`
   flex: 1;
   justify-content: center;
@@ -40,8 +42,18 @@ const MainText = styled.Text`
   color: red;
 `;
 
+let color = ['red', 'balck', 'blue'];
+
+
 const App: () => React$Node = () => {
   const [text, setText] = useState('');
+  const [foodList, setFoodList] = useState([]);
+
+  useEffect(()=>{
+    getFoods((foodList)=>{
+      setFoodList(foodList);
+    })
+  })
   return (
     <>
       <View style={ styles.container}>
