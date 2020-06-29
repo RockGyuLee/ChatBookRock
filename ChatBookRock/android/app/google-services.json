@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "669054650223",
+    "firebase_url": "https://chatbook-c7051.firebaseio.com",
+    "project_id": "chatbook-c7051",
+    "storage_bucket": "chatbook-c7051.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669054650223:android:742e760c17aed144c6ca9a",
+        "android_client_info": {
+          "package_name": "com.ChatBook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669054650223-iho2mmvblvvut2ajfjsh9c9j87ok4i9c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_MdI3qJQOVNjh96JBJSpsjCcPnYVfJRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669054650223-iho2mmvblvvut2ajfjsh9c9j87ok4i9c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669054650223:android:7c4662174ed81f44c6ca9a",
+        "android_client_info": {
+          "package_name": "com.chatbookrock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669054650223-iho2mmvblvvut2ajfjsh9c9j87ok4i9c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_MdI3qJQOVNjh96JBJSpsjCcPnYVfJRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669054650223-iho2mmvblvvut2ajfjsh9c9j87ok4i9c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
