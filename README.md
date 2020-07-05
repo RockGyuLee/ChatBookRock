@@ -8,5 +8,9 @@
 ## Version
 노트북과 git 연결 성공
 
+## react-navigation
+react-navigation 연동 완료. 
+package.json install
+
 ## firebase 연결
 firebase 연결 중.
