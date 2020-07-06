@@ -10,9 +10,25 @@
     "lint": "eslint ."
   },
   "dependencies": {
+<<<<<<< HEAD
     "@react-native-firebase/app": "^7.3.1",
+=======
+    "@babel/plugin-syntax-jsx": "^7.10.1",
+    "@react-native-community/async-storage": "^1.11.0",
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-firebase/app": "^8.0.0",
+    "@react-native-firebase/auth": "^8.0.9",
+    "@react-navigation/native": "^5.6.1",
+    "@react-navigation/stack": "^5.6.2",
+>>>>>>> 74b9beb3683ac78bc4069d19480b892f038454bb
     "react": "16.11.0",
     "react-native": "0.62.2",
+    "react-native-gesture-handler": "^1.6.1",
+    "react-native-reanimated": "^1.9.0",
+    "react-native-safe-area-context": "^3.0.7",
+    "react-native-screens": "^2.9.0",
+    "react-navigation": "^4.4.0",
+    "react-navigation-stack": "^2.8.2",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
