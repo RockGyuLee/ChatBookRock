@@ -27,12 +27,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-<<<<<<< HEAD
-import {addFood, getFoods} from './api/bookApi';
-=======
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
->>>>>>> 74b9beb3683ac78bc4069d19480b892f038454bb
 
 const Container = styled.Text`
   flex: 1;
@@ -48,22 +44,7 @@ const MainText = styled.Text`
   color: red;
 `;
 
-<<<<<<< HEAD
-let color = ['red', 'balck', 'blue'];
-
-
-const App: () => React$Node = () => {
-  const [text, setText] = useState('');
-  const [foodList, setFoodList] = useState([]);
-
-  useEffect(()=>{
-    getFoods((foodList)=>{
-      setFoodList(foodList);
-    })
-  })
-=======
 function HomeScreen() {
->>>>>>> 74b9beb3683ac78bc4069d19480b892f038454bb
   return (
     <View style={ {flex : 1, alignItems : 'center', justifyContent: 'center'}}>
       <Text>Home Screen</Text>
