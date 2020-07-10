@@ -14,3 +14,6 @@ package.json install
 
 ## firebase 연결
 firebase 연결 중.
+
+## test1
+git 연동
