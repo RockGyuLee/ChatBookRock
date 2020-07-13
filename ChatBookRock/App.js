@@ -43,25 +43,55 @@ const MainText = styled.Text`
   color: red;
 `;
 
+const StyledView = styled.View`
+  background-color: papayawhip;
+`
+const StyledTextInput = styled.TextInput`
+  background-color: papayawhip;
+  color: palevioletred;
+  justifyContent : center;
+  alignItems: center;
+  borderColor: black;
+  borderWidth: 1;
+  margin:10;
+`
+
+const StyledButton = styled.Button`
+  color: palevioletred;
+`
+
+
 function HomeScreen({ navigation }) {
   const [text, setText] = useState('');
   return (
     <View style={{ flex: 1,  justifyContent: 'center' }}>
-      <TextInput
-          style={{ justifyContent: 'center', alignItems: 'center' , borderColor: 'black', borderWidth: 1, margin : 20}}
+      <StyledTextInput
           placeholder="아이디"
           textAlign={'center'}
       />
-      <TextInput
-        style={{justifyContent: 'center', alignItems: 'center' , borderColor: 'black', borderWidth: 1, margin : 20}}
+      <StyledTextInput
         placeholder="비밀번호"
         textAlign={'center'}
         secureTextEntry={true}
       />
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-      />
+      <StyledView style = {{
+        flexDirection : "row",
+        alignItems: 'center',
+        justifyContent : "center",
+        }}>
+        <Button
+        style = {
+          {padding : 100}
+        }
+          title="로그인"
+          onPress={() => navigation.navigate('Details')}
+        />
+          <StyledButton
+          title="회원가입"
+          // color = "red"
+          onPress={() => navigation.navigate('Details')}
+          />
+      </StyledView>      
     </View>
   )
 }
@@ -130,5 +160,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
 });
+
+
 
 export default App;
