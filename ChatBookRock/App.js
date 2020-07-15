@@ -28,6 +28,7 @@ import {
 
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {DetailsScreen} from "./src/main/main_layout"
 
 const Container = styled.Text`
   flex: 1;
@@ -53,7 +54,6 @@ const StyledTextInput = styled.TextInput`
   alignItems: center;
   borderColor: black;
   borderWidth: 1;
-  margin:10;
 `
 
 const StyledButton = styled.Button`
@@ -65,16 +65,18 @@ function HomeScreen({ navigation }) {
   const [text, setText] = useState('');
   return (
     <View style={{ flex: 1,  justifyContent: 'center' }}>
-      <StyledTextInput
+      <TextInput
+          style={styles.textArea}
           placeholder="아이디"
           textAlign={'center'}
       />
-      <StyledTextInput
+      <TextInput
+        style = {styles.textArea}
         placeholder="비밀번호"
         textAlign={'center'}
         secureTextEntry={true}
       />
-      <StyledView style = {{
+      <View style = {{
         flexDirection : "row",
         alignItems: 'center',
         justifyContent : "center",
@@ -84,26 +86,14 @@ function HomeScreen({ navigation }) {
           {padding : 100}
         }
           title="로그인"
-          onPress={() => navigation.navigate('Details')}
+          onPress={() => navigation.navigate('Main')}
         />
           <StyledButton
           title="회원가입"
-          // color = "red"
+          color = "red"
           onPress={() => navigation.navigate('Details')}
           />
-      </StyledView>      
-    </View>
-  )
-}
-
-function DetailsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Details Screen</Text>
-      <Button
-        title="Go to Details... again"
-        onPress={() => navigation.navigate('Details')}
-      />
+      </View>      
     </View>
   )
 }
@@ -116,7 +106,7 @@ function App() {
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Login/Sign' }}>
         </Stack.Screen>
-        <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="Main" component={DetailsScreen} options={{ title: 'Main' }}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
@@ -136,6 +126,18 @@ const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
+  },
+  textArea : {
+    marginTop: 16,
+    paddingVertical: 8,
+    borderWidth: 4,
+    borderColor: "#20232a",
+    borderRadius: 6,
+    backgroundColor: "#FFFFFF",
+    color: "#20232a",
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "bold"
   },
   sectionTitle: {
     fontSize: 24,
