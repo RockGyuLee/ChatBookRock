@@ -28,7 +28,9 @@ import {
 
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {DetailsScreen} from "./src/main/main_layout"
+
+import {DetailsScreen} from "./src/main/main_layout";
+import {SignUp} from "./src/signup/signup"
 
 const Container = styled.Text`
   flex: 1;
@@ -61,7 +63,23 @@ const StyledButton = styled.Button`
 `
 
 
+/*
+  소문자로 시작 
+  ex ) javascript 
+  var a this => global variable 전역변수 
+  let b this => local variable 지역변수, 
+  const C 상수, 
+  
+  react component는 대문자로 시작!!!!!
+  function Abc () {} => react component
+  function bca () {} => javascript function
+  
+*/
+
+
+
 function HomeScreen({ navigation }) {
+
   const [text, setText] = useState('');
   return (
     <View style={{ flex: 1,  justifyContent: 'center' }}>
@@ -91,9 +109,9 @@ function HomeScreen({ navigation }) {
           <StyledButton
           title="회원가입"
           color = "red"
-          onPress={() => navigation.navigate('Details')}
+          onPress={() => navigation.navigate('Sign')}
           />
-      </View>      
+      </View>
     </View>
   )
 }
@@ -107,6 +125,7 @@ function App() {
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Login/Sign' }}>
         </Stack.Screen>
         <Stack.Screen name="Main" component={DetailsScreen} options={{ title: 'Main' }}/>
+        <Stack.Screen name="Sign" component={SignUp} options={{ title: '회원가입' }}/>
       </Stack.Navigator>
     </NavigationContainer>
   )

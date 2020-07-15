@@ -15,5 +15,9 @@ package.json install
 ## firebase 연결
 firebase 연결 중.
 
-## test1
-git 연동
+## git 
+    1. git status로 상태를 확인.
+    2. 변경한 내용 git add ~주소~로 확인
+    3. git commit -m "변경한 내용" 
+    4. git pull로 github에 변경된 내용 추가 후 git status로 확인.
+    5. git push 하기전에는 반드시 merge가 된 내용이 있는지 없는지 확인 후 push해야한다. 반드시 명심!!!
