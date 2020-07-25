@@ -14,7 +14,7 @@ package.json install
 
 ## firebase 연결
 firebase 연결 중.
-user 연결 완료 ==> App.js
+    1. user 연결 완료 ==> App.js
 
 ## git 
     1. git status로 상태를 확인.
