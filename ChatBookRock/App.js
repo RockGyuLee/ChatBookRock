@@ -81,7 +81,7 @@ const StyledButton = styled.Button`
 
 
 
-function HomeScreen({ navigation }) {
+function LoginScreen({ navigation }) {
 
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
@@ -156,7 +156,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator >
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Login/Sign' }}>
+        <Stack.Screen name="Home" component={LoginScreen} options={{ title: 'Login/Sign' }}>
         </Stack.Screen>
         <Stack.Screen name="Main" component={DetailsScreen} options={{ title: 'Main' }}/>
         <Stack.Screen name="Sign" component={SignUp} options={{ title: '회원가입' }}/>
