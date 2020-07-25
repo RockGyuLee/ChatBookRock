@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import {
     SafeAreaView,
     StyleSheet,
@@ -11,33 +11,53 @@ import {
   } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import auth from "@react-native-firebase/auth";
 // import {Ionicons} from "@expo/vector-icons";
 
 function ProfileScreen({ navigation }) {
-    React.useEffect(() => {
-      const unsubscribe = navigation.addListener('focus', () => {
-        alert('Screen is focused');
-        // The screen is focused
-        // Call any action
-      });
+  return (
+  <View />
+  )
+}
   
-      // Return the function to unsubscribe from the event so it gets removed on unmount
-      return unsubscribe;
-    }, []);
-  
-    return <View />;
+function HomeScreen( {navigation}) {
+
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
   }
-  
-  function HomeScreen() {
-    return <View />;
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) return null;
+
+  if (!user) {
+    return (
+      <View>
+        <Text>Login</Text>
+      </View>
+    );
   }
+
+  return (
+    <View>
+      <Text>Welcome {user.email}</Text>
+    </View>
+  );
+}
 
 const Tab = createBottomTabNavigator();
 
 export function DetailsScreen() {
     return (
         <>
-       
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />

@@ -31,6 +31,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import {DetailsScreen} from "./src/main/main_layout";
 import {SignUp} from "./src/signup/signup"
+import auth from "@react-native-firebase/auth"
 
 const Container = styled.Text`
   flex: 1;
@@ -63,6 +64,7 @@ const StyledButton = styled.Button`
 `
 
 
+
 /*
   소문자로 시작 
   ex ) javascript 
@@ -78,21 +80,51 @@ const StyledButton = styled.Button`
 
 
 
+
 function HomeScreen({ navigation }) {
 
-  const [text, setText] = useState('');
+  const [userId, setUserId] = useState("");
+  const [userPw, setUserPw] = useState("");
+
+  console.log(userId,userPw);
+  
+
+  let loginExecute = (puserId, puserPw) =>{
+    console.log(puserId,puserPw);
+    auth()
+    .signInWithEmailAndPassword(puserId, puserPw)
+    .then(() => {
+      console.log('User account created & signed in!');
+      navigation.navigate('Main')
+    })
+    .catch(error => {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+      alert("정보가 일치하지 않습니다.");
+      
+    });
+  }
+
+  console.log("userId, userPw", userId,userPw);
   return (
     <View style={{ flex: 1,  justifyContent: 'center' }}>
       <TextInput
           style={styles.textArea}
           placeholder="아이디"
           textAlign={'center'}
+          onChangeText = {id=>setUserId(id)}
       />
       <TextInput
         style = {styles.textArea}
         placeholder="비밀번호"
         textAlign={'center'}
         secureTextEntry={true}
+        onChangeText = {pw=>setUserPw(pw)}
       />
       <View style = {{
         flexDirection : "row",
@@ -104,7 +136,7 @@ function HomeScreen({ navigation }) {
           {padding : 100}
         }
           title="로그인"
-          onPress={() => navigation.navigate('Main')}
+          onPress={loginExecute.bind(null, userId,userPw)}
         />
           <StyledButton
           title="회원가입"
@@ -119,9 +151,11 @@ function HomeScreen({ navigation }) {
 const Stack = createStackNavigator();
 
 function App() {
+
+  
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator >
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Login/Sign' }}>
         </Stack.Screen>
         <Stack.Screen name="Main" component={DetailsScreen} options={{ title: 'Main' }}/>
@@ -181,7 +215,5 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
 });
-
-
 
 export default App;
