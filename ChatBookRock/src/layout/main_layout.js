@@ -21,6 +21,9 @@ import {ProfileScreen} from "./profile";
 import {ChattingScreen} from "./chatting";
 import {CalendarScreen} from "./calendar";
 import {AlarmScreen} from "./alarm";
+
+
+
 const NAVER_CliENT_ID     = "9w8zL8ya88VpwOUOEKfz";
 const NAVER_CLIENT_SECRET = "VVcoPpnoo1";
 
@@ -36,37 +39,28 @@ const option = {
 const color = "#800";
 const size = 25;
 
-function HomeScreen( {navigation}) {
-  // const [initializing, setInitializing] = useState(true);
+function HomeScreen({navigation}) {
+
+  let [bookList,setBookList] = useState([]);
+
+  useEffect(()=>{
+      fetch("https://openapi.naver.com/v1/search/book?query=에너지버스&display=10",{
+      method  :"GET",
+      headers :{
+        'X-Naver-Client-Id': NAVER_CliENT_ID,
+        'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
+        'Content-type': 'application/json'
+        }
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        let item = myJson;
+        setBookList(item.items);
+      });
+  },[])
   
-  // fetch('https://reactnative.dev/movies.json')
-  //   .then((response) => response.json())
-  //   .then((json) => {
-  //     return json.movies;
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
-  console.log("NAVER_CliENT_ID",NAVER_CliENT_ID);
-  console.log("NAVER_CLIENT_SECRET",NAVER_CLIENT_SECRET);
-
-  fetch("https://openapi.naver.com/v1/search/book?query=에너지버스&display=10",{
-    method  :"GET",
-    headers :{
-      'X-Naver-Client-Id': NAVER_CliENT_ID,
-      'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
-      'Content-type': 'application/json'
-    }
-  })
-  .then(res => {
-    console.log("res.json()",res.json());
-    res.json()
-  })
-  .catch(function(err){
-    console.log("error",err);
-  })
-
-  // })
   // Handle user state changes
   // function onAuthStateChanged(user) {
   //   setUser(user);
@@ -96,6 +90,14 @@ function HomeScreen( {navigation}) {
           textAlign={'left'}
           // onChangeText = {id=>setUserId(id)}
       />
+      {bookList.map((item,idx) => {
+        {console.log(item.title)}
+      return(
+        <Text key={idx}>
+          {item.author}{item.title}
+          </Text>
+          ) 
+      })}
     </View>
   );
 }
