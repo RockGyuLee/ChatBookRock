@@ -9,7 +9,6 @@ import React, {useState,useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
   SafeAreaView,
-  StyleSheet,
   ScrollView,
   View,
   Text,
@@ -21,15 +20,15 @@ import {
 import {
   Header,
   LearnMoreLinks,
-  Colors,
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import {styles} from "./src/style/stylComp";
+
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-
-import {DetailsScreen} from "./src/main/main_layout";
+import {DetailsScreen} from "./src/layout/main_layout";
 import {SignUp} from "./src/signup/signup"
 import auth from "@react-native-firebase/auth"
 
@@ -62,9 +61,6 @@ const StyledTextInput = styled.TextInput`
 const StyledButton = styled.Button`
   color: palevioletred;
 `
-
-
-
 /*
   소문자로 시작 
   ex ) javascript 
@@ -77,10 +73,6 @@ const StyledButton = styled.Button`
   function bca () {} => javascript function
   
 */
-
-
-
-
 function LoginScreen({ navigation }) {
 
   const [userId, setUserId] = useState("");
@@ -158,62 +150,12 @@ function App() {
       <Stack.Navigator >
         <Stack.Screen name="Home" component={LoginScreen} options={{ title: 'Login/Sign' }}>
         </Stack.Screen>
-        <Stack.Screen name="Main" component={DetailsScreen} options={{ title: 'Main' }}/>
+        <Stack.Screen name="Main" component={DetailsScreen} />
         <Stack.Screen name="Sign" component={SignUp} options={{ title: '회원가입' }}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
 }
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  textArea : {
-    marginTop: 16,
-    paddingVertical: 8,
-    borderWidth: 4,
-    borderColor: "#20232a",
-    borderRadius: 6,
-    backgroundColor: "#FFFFFF",
-    color: "#20232a",
-    textAlign: "center",
-    fontSize: 15,
-    fontWeight: "bold"
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
 
 export default App;
