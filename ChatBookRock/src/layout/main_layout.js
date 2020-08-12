@@ -12,7 +12,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import auth from "@react-native-firebase/auth";
 import {styles} from "../style/stylComp";
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import AntDesign from "react-native-vector-icons/dist/AntDesign";
 
@@ -21,20 +20,10 @@ import {ProfileScreen} from "./profile";
 import {ChattingScreen} from "./chatting";
 import {CalendarScreen} from "./calendar";
 import {AlarmScreen} from "./alarm";
-
-
+//end 화면 import
 
 const NAVER_CliENT_ID     = "9w8zL8ya88VpwOUOEKfz";
 const NAVER_CLIENT_SECRET = "VVcoPpnoo1";
-
-const option = {
-  query  :'꽃', //이미지 검색 텍스트
-  start  :1, //검색 시작 위치
-  display:3, //가져올 이미지 갯수
-  sort   :'sim', //정렬 유형 (sim:유사도)
-  filter :'small' //이미지 사이즈
-}
-
 
 const color = "#800";
 const size = 25;
@@ -44,12 +33,12 @@ function HomeScreen({navigation}) {
   let [bookList,setBookList] = useState([]);
 
   useEffect(()=>{
-      fetch("https://openapi.naver.com/v1/search/book?query=에너지버스&display=10",{
+      fetch("https://openapi.naver.com/v1/search/book?query=All&display=10&d_publ=쌤앤파커스",{
       method  :"GET",
       headers :{
         'X-Naver-Client-Id': NAVER_CliENT_ID,
         'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
-        'Content-type': 'application/json'
+        "Content-Type": "application/json; charset=utf-8"
         }
       })
       .then(function(response) {
@@ -57,9 +46,10 @@ function HomeScreen({navigation}) {
       })
       .then(function(myJson) {
         let item = myJson;
+        console.log(item);
         setBookList(item.items);
       });
-  },[])
+  },[]);
   
   // Handle user state changes
   // function onAuthStateChanged(user) {
@@ -91,7 +81,7 @@ function HomeScreen({navigation}) {
           // onChangeText = {id=>setUserId(id)}
       />
       {bookList.map((item,idx) => {
-        {console.log(item.title)}
+        {console.log("item",item)}
       return(
         <Text key={idx}>
           {item.author}{item.title}
@@ -104,12 +94,14 @@ function HomeScreen({navigation}) {
 
 const Tab = createBottomTabNavigator();
 
+const Library = <Ionicons name="library" size={size} color={color} />;
+const ChatIcon = <Ionicons name="chatbubbles-outline" size={size} color={color}/>;
+const ProfileIcon = <AntDesign name="contacts" size={size} color={color} />;
+const CalenIcon = <AntDesign name="calendar" size={size} color={color} />;
+const AlarmIcon = <AntDesign name="bells" size={size} color={color} />;
+
 export function DetailsScreen() {
-  const Library = <Ionicons name="library" size={size} color={color} />;
-  const ChatIcon = <Ionicons name="chatbubbles-outline" size={size} color={color}/>;
-  const ProfileIcon = <AntDesign name="contacts" size={size} color={color} />;
-  const CalenIcon = <AntDesign name="calendar" size={size} color={color} />;
-  const AlarmIcon = <AntDesign name="bells" size={size} color={color} />;
+ 
   return (
         <>
           <Tab.Navigator 

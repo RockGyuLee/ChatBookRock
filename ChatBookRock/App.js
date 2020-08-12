@@ -144,7 +144,6 @@ const Stack = createStackNavigator();
 
 function App() {
 
-  
   return (
     <NavigationContainer>
       <Stack.Navigator >
