@@ -24,7 +24,8 @@ import firestore from "@react-native-firebase/firestore"
       console.log('User exists: ', documentSnapshot.exists);
   
       if (documentSnapshot.exists) {
-        console.log('User data: ', documentSnapshot.data());
+        console.log('User data: ', documentSnapshot.data().user_nm);
+        setUser(documentSnapshot.data().user_nm);
       }
     });
 
@@ -41,7 +42,7 @@ import firestore from "@react-native-firebase/firestore"
     }
     return (
     <View>
-      <Text>{userObj.displayName}</Text>
+      <Text>{user}</Text>
     </View>
     )
   }
