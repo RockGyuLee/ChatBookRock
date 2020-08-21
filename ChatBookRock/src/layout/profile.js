@@ -18,7 +18,7 @@ import firestore from "@react-native-firebase/firestore"
 
     const userDocument =firestore()
     .collection('user')
-    .doc('01099185994')
+    .doc(userObj.uid)
     .get()
     .then(documentSnapshot => {
       console.log('User exists: ', documentSnapshot.exists);
@@ -31,15 +31,17 @@ import firestore from "@react-native-firebase/firestore"
 
     console.log("userDocument",userDocument);
   
-    if(userObj != null){
-      userObj.providerData.forEach(function(profile){
-        console.log("Sign-in provider: " + profile.providerId);
-        console.log("  Provider-specific UID: " + profile.uid);
-        console.log("  Name: " + profile.displayName);
-        console.log("  Email: " + profile.email);
-        console.log("  Photo URL: " + profile.photoURL);
-      });
-    }
+    // if(userObj != null){
+    //   console.log("user",userObj.uid)
+    //   userObj.providerData.forEach(function(profile){
+
+    //     console.log("Sign-in provider: " + profile.providerId);
+    //     console.log("  Provider-specific UID: " + profile.uid);
+    //     console.log("  Name: " + profile.displayName);
+    //     console.log("  Email: " + profile.email);
+    //     console.log("  Photo URL: " + profile.photoURL);
+    //   });
+    // }
     return (
     <View>
       <Text>{user}</Text>
