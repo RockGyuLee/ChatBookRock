@@ -8,9 +8,15 @@
   "client": [
     {
       "client_info": {
+<<<<<<< HEAD
         "mobilesdk_app_id": "1:669054650223:android:742e760c17aed144c6ca9a",
         "android_client_info": {
           "package_name": "com.ChatBook"
+=======
+        "mobilesdk_app_id": "1:669054650223:android:7c4662174ed81f44c6ca9a",
+        "android_client_info": {
+          "package_name": "com.chatbookrock"
+>>>>>>> develop
         }
       },
       "oauth_client": [
@@ -37,9 +43,15 @@
     },
     {
       "client_info": {
+<<<<<<< HEAD
         "mobilesdk_app_id": "1:669054650223:android:7c4662174ed81f44c6ca9a",
         "android_client_info": {
           "package_name": "com.chatbookrock"
+=======
+        "mobilesdk_app_id": "1:669054650223:android:17b7fcdb0c9fac66c6ca9a",
+        "android_client_info": {
+          "package_name": "com.chatbookrock.app"
+>>>>>>> develop
         }
       },
       "oauth_client": [

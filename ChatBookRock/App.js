@@ -5,26 +5,32 @@
  * @format
  * @flow strict-local
  */
-
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
   SafeAreaView,
-  StyleSheet,
   ScrollView,
   View,
   Text,
   TextInput,
   StatusBar,
+  Button
 } from 'react-native';
 
 import {
   Header,
   LearnMoreLinks,
-  Colors,
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+import {styles} from "./src/style/stylComp";
+
+import { NavigationContainer } from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {DetailsScreen} from "./src/layout/main_layout";
+import {SignUp} from "./src/signup/signup"
+import auth from "@react-native-firebase/auth"
 
 const Container = styled.Text`
   flex: 1;
@@ -40,105 +46,116 @@ const MainText = styled.Text`
   color: red;
 `;
 
-const App: () => React$Node = () => {
-  const [text, setText] = useState('');
+const StyledView = styled.View`
+  background-color: papayawhip;
+`
+const StyledTextInput = styled.TextInput`
+  background-color: papayawhip;
+  color: palevioletred;
+  justifyContent : center;
+  alignItems: center;
+  borderColor: black;
+  borderWidth: 1;
+`
+
+const StyledButton = styled.Button`
+  color: palevioletred;
+`
+/*
+  소문자로 시작 
+  ex ) javascript 
+  var a this => global variable 전역변수 
+  let b this => local variable 지역변수, 
+  const C 상수, 
+  
+  react component는 대문자로 시작!!!!!
+  function Abc () {} => react component
+  function bca () {} => javascript function
+  
+*/
+
+function LoginScreen({ navigation }) {
+
+  const [userId, setUserId] = useState("");
+  const [userPw, setUserPw] = useState("");
+  
+  let loginExecute = (puserId, puserPw) => {
+    console.log(puserId,puserPw);
+    auth()
+    .signInWithEmailAndPassword(puserId, puserPw)
+    .then(() => {
+      console.log('User account created & signed in!');
+      navigation.navigate('Main')
+    })
+    .catch(error => {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+      alert("정보가 일치하지 않습니다.");
+    });
+  }
+
+  console.log("userId, userPw", userId,userPw);
   return (
-    <>
-      <View style={ styles.container}>
+    <View style={{ flex: 1,  justifyContent: 'center' }}>
       <TextInput
+          style={styles.textArea}
+          placeholder="아이디"
+          textAlign={'center'}
+          onChangeText = {id=>setUserId(id)}
+      />
+      <TextInput
+<<<<<<< HEAD
         style={{justifyContent: 'center', alignItems: 'center' , borderColor: 'black', borderWidth: 1, margin : 50}}
         placeholder="주기 설정 notebook"
+=======
+        style = {styles.textArea}
+        placeholder="비밀번호"
+>>>>>>> develop
         textAlign={'center'}
-        onChangeText={text => setText(text)}
-        defaultValue={text}
+        secureTextEntry={true}
+        onChangeText = {pw=>setUserPw(pw)}
       />
-
-      <Text style={{padding: 10, fontSize: 42}}>
-            {text}
-      </Text>
+      <View style = {{
+        flexDirection : "row",
+        alignItems: 'center',
+        justifyContent : "center",
+        }}>
+        <Button
+        style = {
+          {padding : 100}
+        }
+          title="로그인"
+          onPress={loginExecute.bind(null, userId,userPw)}
+        />
+          <StyledButton
+          title="회원가입"
+          color = "red"
+          onPress={() => navigation.navigate('Sign')}
+          />
+      </View>
     </View>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+  )
+}
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+const Stack = createStackNavigator();
+
+function App() {
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator >
+        <Stack.Screen name="Home" component={LoginScreen} options={{ title: 'Login/Sign' }}>
+        </Stack.Screen>
+        <Stack.Screen name="Main" component={DetailsScreen} />
+        <Stack.Screen name="Sign" component={SignUp} options={{ title: '회원가입' }}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
 
 export default App;
