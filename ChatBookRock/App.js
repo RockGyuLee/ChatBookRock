@@ -6,50 +6,41 @@
  * @flow strict-local
  */
 import React, {useState,useEffect} from 'react';
-import styled from 'styled-components/native';
-import {
-  SafeAreaView,
-  ScrollView,
-  View,
-  Text,
-  TextInput,
-  StatusBar,
-  Button
-} from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-import {styles} from "./src/style/stylComp";
+import Styled from 'styled-components/native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DetailsScreen} from "./src/layout/main_layout";
 import {SignUp} from "./src/signup/signup"
 import auth from "@react-native-firebase/auth"
-
-const Container = styled.Text`
+import Button from './src/Component/Button';
+import Input from './src/Component/Input';
+import SplashScreen from 'react-native-splash-screen';
+const Container = Styled.SafeAreaView`
   flex: 1;
-  justify-content: center;
+  background-color: #a0bdb4;
   align-items: center;
-  background-color: #f5fcff;
+  justify-content: center;
+`;
+const SignUpButton = Styled.Text`
+  width: 100%;
+  font-size: 12px;
+  color: #FFFFFF;
+  text-align: center;
 `;
 
-const MainText = styled.Text`
+
+const MainText = Styled.Text`
   font-size: 20;
   text-align: center;
   margin: 10px;
   color: red;
 `;
 
-const StyledView = styled.View`
+const StyledView = Styled.View`
   background-color: papayawhip;
 `
-const StyledTextInput = styled.TextInput`
+const StyledTextInput = Styled.TextInput`
   background-color: papayawhip;
   color: palevioletred;
   justifyContent : center;
@@ -58,9 +49,13 @@ const StyledTextInput = styled.TextInput`
   borderWidth: 1;
 `
 
-const StyledButton = styled.Button`
+const StyledButton = Styled.Button`
   color: palevioletred;
 `
+const FormContainer = Styled.View`
+  width: 100%;
+  padding: 40px;
+`;
 /*
   소문자로 시작 
   ex ) javascript 
@@ -73,14 +68,27 @@ const StyledButton = styled.Button`
   function bca () {} => javascript function
   
 */
+
 function LoginScreen({ navigation }) {
 
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
+<<<<<<< HEAD
 
+=======
+>>>>>>> dd3e8f7a869c39c6201779faf2b2792beed08bf8
   
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
+
+<<<<<<< HEAD
   let loginExecute = (puserId, puserPw) =>{
+=======
+  let loginExecute = (puserId, puserPw) => {
+    console.log(puserId,puserPw);
+>>>>>>> dd3e8f7a869c39c6201779faf2b2792beed08bf8
     auth()
     .signInWithEmailAndPassword(puserId, puserPw)
     .then(() => {
@@ -96,53 +104,43 @@ function LoginScreen({ navigation }) {
         console.log('That email address is invalid!');
       }
       alert("정보가 일치하지 않습니다.");
-      
     });
   }
 
   console.log("userId, userPw", userId,userPw);
   return (
-    <View style={{ flex: 1,  justifyContent: 'center' }}>
-      <TextInput
-          style={styles.textArea}
+    <Container>
+      <FormContainer>
+        <Input
+          style={{marginBottom: 16}}
           placeholder="아이디"
-          textAlign={'center'}
-          onChangeText = {id=>setUserId(id)}
-      />
-      <TextInput
-        style = {styles.textArea}
-        placeholder="비밀번호"
-        textAlign={'center'}
-        secureTextEntry={true}
-        onChangeText = {pw=>setUserPw(pw)}
-      />
-      <View style = {{
-        flexDirection : "row",
-        alignItems: 'center',
-        justifyContent : "center",
-        }}>
+          onChangeText = {id=>setUserId(id)} 
+        />
+        <Input
+          style={{marginBottom: 16}}
+          placeholder="비밀번호"
+          secureTextEntry={true}
+          onChangeText = {pw=>setUserPw(pw)}
+        />
         <Button
-        style = {
-          {padding : 100}
-        }
-          title="로그인"
+          style={{marginBottom: 24}}
+          label="로그인"
           onPress={loginExecute.bind(null, userId,userPw)}
         />
-          <StyledButton
-          title="회원가입"
-          color = "red"
+        <SignUpButton
           onPress={() => navigation.navigate('Sign')}
-          />
-      </View>
-    </View>
-  )
-}
+        >
+          비밀번호 재설정
+        </SignUpButton>
+      </FormContainer>
+    </Container>
+  );
+};
 
 const Stack = createStackNavigator();
 
 function App() {
 
-  
   return (
     <NavigationContainer>
       <Stack.Navigator >
@@ -154,6 +152,5 @@ function App() {
     </NavigationContainer>
   )
 }
-
 
 export default App;
