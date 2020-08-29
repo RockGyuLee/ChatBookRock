@@ -78,11 +78,9 @@ function LoginScreen({ navigation }) {
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
 
-  console.log(userId,userPw);
   
 
   let loginExecute = (puserId, puserPw) =>{
-    console.log(puserId,puserPw);
     auth()
     .signInWithEmailAndPassword(puserId, puserPw)
     .then(() => {
