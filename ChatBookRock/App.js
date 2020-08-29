@@ -73,22 +73,14 @@ function LoginScreen({ navigation }) {
 
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
-<<<<<<< HEAD
-
-=======
->>>>>>> dd3e8f7a869c39c6201779faf2b2792beed08bf8
   
   useEffect(() => {
     SplashScreen.hide();
   }, []);
 
 
-<<<<<<< HEAD
-  let loginExecute = (puserId, puserPw) =>{
-=======
   let loginExecute = (puserId, puserPw) => {
     console.log(puserId,puserPw);
->>>>>>> dd3e8f7a869c39c6201779faf2b2792beed08bf8
     auth()
     .signInWithEmailAndPassword(puserId, puserPw)
     .then(() => {
