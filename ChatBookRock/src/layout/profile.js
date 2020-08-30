@@ -12,6 +12,7 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore"
 
  export function ProfileScreen({navigation}) {
+
     const [user, setUser] = useState();
   
     let userObj = auth().currentUser;
@@ -31,17 +32,6 @@ import firestore from "@react-native-firebase/firestore"
 
     console.log("userDocument",userDocument);
   
-    // if(userObj != null){
-    //   console.log("user",userObj.uid)
-    //   userObj.providerData.forEach(function(profile){
-
-    //     console.log("Sign-in provider: " + profile.providerId);
-    //     console.log("  Provider-specific UID: " + profile.uid);
-    //     console.log("  Name: " + profile.displayName);
-    //     console.log("  Email: " + profile.email);
-    //     console.log("  Photo URL: " + profile.photoURL);
-    //   });
-    // }
     return (
     <View>
       <Text>{user}</Text>
