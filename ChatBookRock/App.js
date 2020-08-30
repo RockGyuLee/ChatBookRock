@@ -8,6 +8,12 @@
 import React, {useState,useEffect} from 'react';
 import Styled from 'styled-components/native';
 
+import { 
+  View, 
+  Text,
+  TouchableOpacity,
+} from "react-native";
+
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DetailsScreen} from "./src/layout/main_layout";
@@ -16,17 +22,21 @@ import auth from "@react-native-firebase/auth"
 import Button from './src/Component/Button';
 import Input from './src/Component/Input';
 import SplashScreen from 'react-native-splash-screen';
+
+import Entypo from "react-native-vector-icons/dist/Entypo";
+import { updateIf } from 'typescript';
+
 const Container = Styled.SafeAreaView`
   flex: 1;
   background-color: #a0bdb4;
   align-items: center;
   justify-content: center;
 `;
+
 const SignUpButton = Styled.Text`
   width: 100%;
-  font-size: 12px;
-  color: #FFFFFF;
-  text-align: center;
+  font-size: 15px;
+  color: ${props=> props.color || "#FFFFFF"} ;
 `;
 
 
@@ -80,23 +90,30 @@ function LoginScreen({ navigation }) {
 
 
   let loginExecute = (puserId, puserPw) => {
-    console.log(puserId,puserPw);
-    auth()
-    .signInWithEmailAndPassword(puserId, puserPw)
-    .then(() => {
-      console.log('User account created & signed in!');
-      navigation.navigate('Main')
-    })
-    .catch(error => {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
+    if(puserId == "" || puserPw == "") {
+      alert("아이디와 패스워드를 입력해주세요.")
+    }else{
+      auth()
+      .signInWithEmailAndPassword(puserId, puserPw)
+      .then(() => {
+        console.log('User account created & signed in!');
+        navigation.navigate('Main')
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
 
-      if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
-      alert("정보가 일치하지 않습니다.");
-    });
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+        alert("정보가 일치하지 않습니다.");
+      });
+    }
+  }
+
+  let handlerFaceLogin = () => {
+    alert("facebookLogin");
   }
 
   console.log("userId, userPw", userId,userPw);
@@ -119,11 +136,30 @@ function LoginScreen({ navigation }) {
           label="로그인"
           onPress={loginExecute.bind(null, userId,userPw)}
         />
-        <SignUpButton
+        <TouchableOpacity style={{
+          flexDirection : "row",
+          backgroundColor : "#3b5998",
+          alignItems : "center",
+          justifyContent : "flex-start",
+          height : 40,
+          borderRadius : 3
+        }}
+         onPress={handlerFaceLogin}
+        >
+          <Entypo 
+          name ="facebook" 
+          size={25}
+          style={{
+            paddingLeft:10
+          }}
+          color="white"/>
+          <SignUpButton color={"white"} style={{paddingLeft:20}}>페이스북 아이디로 로그인</SignUpButton>
+        </TouchableOpacity>
+        {/* <SignUpButton
           onPress={() => navigation.navigate('Sign')}
         >
           비밀번호 재설정
-        </SignUpButton>
+        </SignUpButton> */}
       </FormContainer>
     </Container>
   );
