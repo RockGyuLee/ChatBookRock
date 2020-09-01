@@ -50,27 +50,6 @@ function HomeScreen({navigation}) {
         setBookList(item.items);
       });
   },[]);
-  
-  // Handle user state changes
-  // function onAuthStateChanged(user) {
-  //   setUser(user);
-  //   if (initializing) setInitializing(false);
-  // }
-  // console.log("user",user);
-  // useEffect(() => {
-  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-  //   return subscriber; // unsubscribe on unmount
-  // }, []);
-
-  // if (initializing) return null;
-
-  // if (!userObj) {
-  //   return (
-  //     <View>
-  //       <Text>Login</Text>
-  //     </View>
-  //   );
-  // }
 
   return (
     <View>
@@ -131,11 +110,5 @@ export function DetailsScreen() {
             }}/>
           </Tab.Navigator>
       </>
-    //   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    //     <Text>Details Screen</Text>
-    //     <Button
-    //       title="Go to Details... again"
-    //       onPress={()=>alert("test")}/>
-    //   </View>
     )
   }

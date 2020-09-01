@@ -25,6 +25,7 @@ import SplashScreen from 'react-native-splash-screen';
 
 import Entypo from "react-native-vector-icons/dist/Entypo";
 import { updateIf } from 'typescript';
+import {LoginManager,AccessToken} from "react-native-fbsdk"
 
 const Container = Styled.SafeAreaView`
   flex: 1;
@@ -79,6 +80,10 @@ const FormContainer = Styled.View`
   
 */
 
+const BrandColor = {
+  FaceBook : "#3b5998"
+}
+
 function LoginScreen({ navigation }) {
 
   const [userId, setUserId] = useState("");
@@ -90,13 +95,15 @@ function LoginScreen({ navigation }) {
 
 
   let loginExecute = (puserId, puserPw) => {
+    console.log("loginExecute",puserId,puserPw);
     if(puserId == "" || puserPw == "") {
       alert("아이디와 패스워드를 입력해주세요.")
     }else{
       auth()
       .signInWithEmailAndPassword(puserId, puserPw)
       .then(() => {
-        console.log('User account created & signed in!');
+        console.log("login")
+        console.log(navigation.navigate("Main"))
         navigation.navigate('Main')
       })
       .catch(error => {
@@ -107,16 +114,39 @@ function LoginScreen({ navigation }) {
         if (error.code === 'auth/invalid-email') {
           console.log('That email address is invalid!');
         }
-        alert("정보가 일치하지 않습니다.");
       });
     }
   }
 
   let handlerFaceLogin = () => {
-    alert("facebookLogin");
+    onFacebookButtonPress().then(() => {
+      console.log("facebook Login")
+      navigation.navigate('Main')
+    })
   }
 
-  console.log("userId, userPw", userId,userPw);
+  async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+  
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+  
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+  
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+  
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+  
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
+
   return (
     <Container>
       <FormContainer>
@@ -138,7 +168,7 @@ function LoginScreen({ navigation }) {
         />
         <TouchableOpacity style={{
           flexDirection : "row",
-          backgroundColor : "#3b5998",
+          backgroundColor : BrandColor.FaceBook,
           alignItems : "center",
           justifyContent : "flex-start",
           height : 40,
@@ -174,7 +204,7 @@ function App() {
       <Stack.Navigator >
         <Stack.Screen name="Home" component={LoginScreen} options={{ title: 'Login/Sign' }}>
         </Stack.Screen>
-        <Stack.Screen name="Main" component={DetailsScreen} />
+        <Stack.Screen name="Main" component={DetailsScreen}/>
         <Stack.Screen name="Sign" component={SignUp} options={{ title: '회원가입' }}/>
       </Stack.Navigator>
     </NavigationContainer>
