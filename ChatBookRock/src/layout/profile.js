@@ -17,8 +17,10 @@ import firestore from "@react-native-firebase/firestore"
   
     let userObj = auth().currentUser;
 
+    console.log("userObj",userObj)
+
     const userDocument =firestore()
-    .collection('user')
+    .collection('user_profile')
     .doc(userObj.uid)
     .get()
     .then(documentSnapshot => {

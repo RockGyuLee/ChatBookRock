@@ -22,14 +22,15 @@ import auth from "@react-native-firebase/auth"
 import Button from './src/Component/Button';
 import Input from './src/Component/Input';
 import SplashScreen from 'react-native-splash-screen';
-
+import firestore from "@react-native-firebase/firestore"
+import {fbcolDoc} from "./src/util/firestore";
 import Entypo from "react-native-vector-icons/dist/Entypo";
 import { updateIf } from 'typescript';
 import {LoginManager,AccessToken} from "react-native-fbsdk"
 
 const Container = Styled.SafeAreaView`
   flex: 1;
-  background-color: #a0bdb4;
+  background-color: white;
   align-items: center;
   justify-content: center;
 `;
@@ -84,10 +85,32 @@ const BrandColor = {
   FaceBook : "#3b5998"
 }
 
+
 function LoginScreen({ navigation }) {
 
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
+
+  const [bUI, setBUI ] = useState({});
+
+
+  // console.log("h",test)
+  // console.log("hello",test.then(documentSnapshot => {
+  //   console.log(documentSnapshot)
+  //   documentSnapshot.data();
+  // }) )
+
+
+  // console.log(findDoc('user','basic_user_info').then(documentSnapshot => {
+  //   console.log(documentSnapshot)
+  // }))
+
+  useEffect(()=>{
+    fbcolDoc('user','basic_user_info')
+    .then(documentSnapshot => {
+      setBUI(documentSnapshot.data());
+    })
+  },[])
   
   useEffect(() => {
     SplashScreen.hide();
@@ -103,7 +126,6 @@ function LoginScreen({ navigation }) {
       .signInWithEmailAndPassword(puserId, puserPw)
       .then(() => {
         console.log("login")
-        console.log(navigation.navigate("Main"))
         navigation.navigate('Main')
       })
       .catch(error => {
@@ -120,8 +142,18 @@ function LoginScreen({ navigation }) {
 
   let handlerFaceLogin = () => {
     onFacebookButtonPress().then(() => {
-      console.log("facebook Login")
       navigation.navigate('Main')
+      let userObj = auth().currentUser;
+      firestore()
+      .collection('user_profile')
+      .doc(userObj.uid)
+      .set(Object.assign({},bUI,{
+        user_nm : userObj.displayName,
+        user_email : userObj.email,
+        user_img : userObj.photoURL
+      }))
+      .then(() => {
+      });
     })
   }
 
@@ -151,12 +183,20 @@ function LoginScreen({ navigation }) {
     <Container>
       <FormContainer>
         <Input
-          style={{marginBottom: 16}}
+          style={{
+            marginBottom: 16,
+            borderColor: '#89B2E9', 
+            borderWidth: 1 
+          }}
           placeholder="아이디"
           onChangeText = {id=>setUserId(id)} 
         />
         <Input
-          style={{marginBottom: 16}}
+          style={{
+            marginBottom: 16,
+            borderColor: '#89B2E9', 
+            borderWidth: 1 
+          }}
           placeholder="비밀번호"
           secureTextEntry={true}
           onChangeText = {pw=>setUserPw(pw)}
@@ -204,7 +244,7 @@ function App() {
       <Stack.Navigator >
         <Stack.Screen name="Home" component={LoginScreen} options={{ title: 'Login/Sign' }}>
         </Stack.Screen>
-        <Stack.Screen name="Main" component={DetailsScreen}/>
+        <Stack.Screen name="Main" component={DetailsScreen}  options={{ title: '서재' }}/>
         <Stack.Screen name="Sign" component={SignUp} options={{ title: '회원가입' }}/>
       </Stack.Navigator>
     </NavigationContainer>

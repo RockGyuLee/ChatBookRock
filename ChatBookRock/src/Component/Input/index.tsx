@@ -7,7 +7,6 @@ const Container = Styled.View`
   padding-left: 16px;
   padding-right: 16px;
   border-radius: 4px;
-  background-color: #333333;
 `;
 const InputField = Styled.TextInput`
   flex: 1;
@@ -40,7 +39,7 @@ const Input = ({
         autoCapitalize="none"
         autoCorrect={false}
         allowFontScaling={false}
-        placeholderTextColor="#FFFFFF"
+        placeholderTextColor="#89B2E9"
         placeholder={placeholder}
         clearButtonMode={clearMode ? 'while-editing' : 'never'}
         onChangeText={onChangeText}

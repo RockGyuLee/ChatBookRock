@@ -1,8 +1,16 @@
 import { StyleSheet} from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+
 export const styles = StyleSheet.create({
+
+    appColor : {
+      color : "#89B2E9"
+    },
+    container: {
+      flex: 1,
+    },
     scrollView: {
-      backgroundColor: Colors.lighter,
+      backgroundColor: Colors.Header,
     },
     engine: {
       position: 'absolute',
@@ -49,5 +57,15 @@ export const styles = StyleSheet.create({
       paddingRight: 12,
       textAlign: 'right',
     },
+    panelView : {
+      backgroundColor: "white",
+      borderColor: "#89B2E9",
+      borderWidth: 1,
+      height: 120,
+      margin: 10,
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 10
+    }
   });
-  
