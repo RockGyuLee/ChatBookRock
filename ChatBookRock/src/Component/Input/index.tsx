@@ -10,7 +10,7 @@ const Container = Styled.View`
 `;
 const InputField = Styled.TextInput`
   flex: 1;
-  color: #FFFFFF;
+  color: #89B2E9;
 `;
 
 interface Props {

@@ -9,6 +9,7 @@ import {
     StatusBar,
     Button
   } from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import auth from "@react-native-firebase/auth";
@@ -38,16 +39,89 @@ const CalenIcon = <AntDesign name="calendar" size={size} color={color} />;
 const AlarmIcon = <AntDesign name="bells" size={size} color={color} />;
 
 
+function SecondScreen() {
+
+  let [bookNm, setBookNm] = useState(null);
+
+  let[ searchBookList, setSearchBookList] = useState([]);
+
+  let searchHandle = (pBookNm) => {
+    // console.log("pbookNm",pBookNm);
+    let url = `https://openapi.naver.com/v1/search/book?query=${pBookNm}&display=10`
+    fetch(url,{
+      method  :"GET",
+      headers :{
+        'X-Naver-Client-Id': NAVER_CliENT_ID,
+        'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
+        "Content-Type": "application/json; charset=utf-8"
+        }
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        let item = myJson;
+        setSearchBookList(item.items);
+      });
+  }
+
+  // useEffect(()=>{
+  //     fetch("https://openapi.naver.com/v1/search/book?query=에너지버스&&display=10",{
+  //     method  :"GET",
+  //     headers :{
+  //       'X-Naver-Client-Id': NAVER_CliENT_ID,
+  //       'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
+  //       "Content-Type": "application/json; charset=utf-8"
+  //       }
+  //     })
+  //     .then(function(response) {
+  //       return response.json();
+  //     })
+  //     .then(function(myJson) {
+  //       let item = myJson;
+  //       console.log("test",item.items);
+  //       setSearchBookList(item.items);
+  //     });
+  // },[]);
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style ={styles.searchTextInput}>
+      <TextInput
+          style={{width : "90%"}}
+          placeholder="책 제목을 입력해주세요!!"
+          textAlign={'left'}
+          onChangeText = {nm=>setBookNm(nm)}
+      />
+      <Ionicons name="md-search-outline" size={size} color={styles.appColor.color} onPress={searchHandle.bind(null,bookNm)}/>
+      </View>
+      <ScrollView style={styles.scrollView}>
+      {searchBookList.map((item,idx) => {
+        return(
+          <View key={idx} style={styles.panelView}>
+              <Text key={idx}>
+                {item.author}{item.title}ENd
+              </Text>
+            </View>
+            )
+        })
+      }
+    </ScrollView>
+    </SafeAreaView>
+  );
+}
+
 function BookSearchComp(props){
   let styleObj = Object.assign({},styles.panelView,{
-    justifyContent: "center",alignItems: "center",});
+    justifyContent: "center",alignItems: "center"});
+  let navigation = props.navigation;
+
   return (
-      <TouchableOpacity style={styleObj}>
+      <TouchableOpacity style={styleObj} onPress={()=> navigation.navigate('second')}>
           <View style={{
             flexDirection : "row",
             justifyContent: "center",
             alignItems: "center",
-            
             }}>
             <Ionicons name="md-search-outline"  size={size} color={styles.appColor.color} />
           <Text style = {{
@@ -66,56 +140,35 @@ function HomeScreen({navigation}) {
   useEffect(()=>{
     fbcolDoc('user_profile',userObj.uid)
     .then(documentSnapshot => {
+      // console.log("test", documentSnapshot.data().user_like_book)
       setBookList(documentSnapshot.data().user_like_book)
     })
   },[]);
-
-
-  // useEffect(()=>{
-  //     fetch("https://openapi.naver.com/v1/search/book?query=All&display=10&d_publ=쌤앤파커스",{
-  //     method  :"GET",
-  //     headers :{
-  //       'X-Naver-Client-Id': NAVER_CliENT_ID,
-  //       'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
-  //       "Content-Type": "application/json; charset=utf-8"
-  //       }
-  //     })
-  //     .then(function(response) {
-  //       return response.json();
-  //     })
-  //     .then(function(myJson) {
-  //       let item = myJson;
-  //       console.log(item);
-  //       setBookList(item.items);
-  //     });
-  // },[]);
 
   return (
     <SafeAreaView style={styles.container}>
     <ScrollView style={styles.scrollView}>
       {bookList.length == 0 
-        ? <BookSearchComp/>
+        ? <BookSearchComp navigation={navigation}/>
         : bookList.map((item, idx)=>{
 
         })
       }
-      {/* <TextInput
-          style={styles.textArea}
-          placeholder="검색.."
-          textAlign={'left'}
-          // onChangeText = {id=>setUserId(id)}
-      />
-      {bookList.map((item,idx) => {
-        {console.log("item",item)}
-      return(
-        <Text key={idx}>
-          {item.author}{item.title}
-          </Text>
-          ) 
-      })} */}
+      
     </ScrollView>
     </SafeAreaView>
   );
+}
+
+const HomeStack = createStackNavigator();
+
+function HomeLayout(){
+  return (
+      <HomeStack.Navigator>
+        <HomeStack.Screen name ="Main" component = {HomeScreen} ></HomeStack.Screen>
+        <HomeStack.Screen name="second" component={SecondScreen} options={{header:{visible:false}}} />
+    </HomeStack.Navigator>
+  )
 }
 
 const Tab = createBottomTabNavigator();
@@ -129,7 +182,7 @@ export function DetailsScreen() {
           tabBarOptions={{ 
             activeTintColor: '#e91e63',
           }}>
-            <Tab.Screen name="Home" component={HomeScreen}  options={{
+            <Tab.Screen name="Home" component={HomeLayout}  options={{
               tabBarLabel : "Home",
               tabBarIcon : () => (Library)
             }}/>
