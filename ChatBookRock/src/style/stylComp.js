@@ -25,6 +25,7 @@ export const styles = StyleSheet.create({
     },
     searchTextInput : {
       borderColor: "#89B2E9",
+      backgroundColor: "white",
       borderWidth: 2,
       margin: 10,
       flexDirection: "row",
@@ -71,6 +72,18 @@ export const styles = StyleSheet.create({
       textAlign: 'right',
     },
     panelView : {
+      backgroundColor: "white",
+      borderColor: "#89B2E9",
+      borderWidth: 2,
+      height: 120,
+      margin: 10,
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 10
+    },
+    imageView : {
+      flexDirection : "row",
       backgroundColor: "white",
       borderColor: "#89B2E9",
       borderWidth: 2,

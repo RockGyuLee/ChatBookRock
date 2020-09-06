@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     Text,
     TextInput,
+    Image,
     StatusBar,
     Button
   } from 'react-native';
@@ -16,6 +17,7 @@ import auth from "@react-native-firebase/auth";
 import {styles} from "../style/stylComp";
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import AntDesign from "react-native-vector-icons/dist/AntDesign";
+import { BView } from "../Component/basicComp";
 
 import {userObj, fbcolDoc} from "../util/firestore"
 
@@ -38,8 +40,7 @@ const ProfileIcon = <AntDesign name="contacts" size={size} color={color} />;
 const CalenIcon = <AntDesign name="calendar" size={size} color={color} />;
 const AlarmIcon = <AntDesign name="bells" size={size} color={color} />;
 
-
-function SecondScreen() {
+function SearchSreen() {
 
   let [bookNm, setBookNm] = useState(null);
 
@@ -61,35 +62,21 @@ function SecondScreen() {
       })
       .then(function(myJson) {
         let item = myJson;
+        console.log(item);
         setSearchBookList(item.items);
       });
   }
 
-  // useEffect(()=>{
-  //     fetch("https://openapi.naver.com/v1/search/book?query=에너지버스&&display=10",{
-  //     method  :"GET",
-  //     headers :{
-  //       'X-Naver-Client-Id': NAVER_CliENT_ID,
-  //       'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
-  //       "Content-Type": "application/json; charset=utf-8"
-  //       }
-  //     })
-  //     .then(function(response) {
-  //       return response.json();
-  //     })
-  //     .then(function(myJson) {
-  //       let item = myJson;
-  //       console.log("test",item.items);
-  //       setSearchBookList(item.items);
-  //     });
-  // },[]);
+  let handleInsert = (item) => {
+    alert(item.title);
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style ={styles.searchTextInput}>
       <TextInput
           style={{width : "90%"}}
-          placeholder="책 제목을 입력해주세요!!"
+          placeholder="책 제목을 입력해주세요."
           textAlign={'left'}
           onChangeText = {nm=>setBookNm(nm)}
       />
@@ -98,12 +85,8 @@ function SecondScreen() {
       <ScrollView style={styles.scrollView}>
       {searchBookList.map((item,idx) => {
         return(
-          <View key={idx} style={styles.panelView}>
-              <Text key={idx}>
-                {item.author}{item.title}ENd
-              </Text>
-            </View>
-            )
+          <BView key={idx} idx={idx} item={item} onPress={handleInsert.bind(null, item)}/>
+          )
         })
       }
     </ScrollView>
@@ -116,8 +99,9 @@ function BookSearchComp(props){
     justifyContent: "center",alignItems: "center"});
   let navigation = props.navigation;
 
+  
   return (
-      <TouchableOpacity style={styleObj} onPress={()=> navigation.navigate('second')}>
+      <TouchableOpacity style={styleObj} onPress={()=> navigation.navigate('search')}>
           <View style={{
             flexDirection : "row",
             justifyContent: "center",
@@ -152,9 +136,7 @@ function HomeScreen({navigation}) {
         ? <BookSearchComp navigation={navigation}/>
         : bookList.map((item, idx)=>{
 
-        })
-      }
-      
+        })}
     </ScrollView>
     </SafeAreaView>
   );
@@ -166,7 +148,7 @@ function HomeLayout(){
   return (
       <HomeStack.Navigator>
         <HomeStack.Screen name ="Main" component = {HomeScreen} ></HomeStack.Screen>
-        <HomeStack.Screen name="second" component={SecondScreen} options={{header:{visible:false}}} />
+        <HomeStack.Screen name="search" component={SearchSreen} options={{header:{visible:false}}} />
     </HomeStack.Navigator>
   )
 }
