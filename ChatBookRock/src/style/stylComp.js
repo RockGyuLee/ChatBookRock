@@ -4,7 +4,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 export const styles = StyleSheet.create({
 
     appColor : {
-      color : "#89B2E9"
+      color : "#89B2E9",
     },
     container: {
       flex: 1,
@@ -85,6 +85,7 @@ export const styles = StyleSheet.create({
     imageView : {
       flexDirection : "row",
       backgroundColor: "white",
+      alignItems: "center",
       borderColor: "#89B2E9",
       borderWidth: 2,
       height: 120,
@@ -92,6 +93,13 @@ export const styles = StyleSheet.create({
       borderTopLeftRadius: 10,
       borderTopRightRadius: 10,
       borderBottomLeftRadius: 10,
-      borderBottomRightRadius: 10
+      borderBottomRightRadius: 10,
+      
     }
   });
+
+export const AppColor = {
+  color : "#89B2E9",
+  unlike : "#000000",
+  like : "#FD1D1D"
+}

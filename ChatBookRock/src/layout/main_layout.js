@@ -18,8 +18,9 @@ import {styles} from "../style/stylComp";
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import AntDesign from "react-native-vector-icons/dist/AntDesign";
 import { BView } from "../Component/basicComp";
-
 import {userObj, fbcolDoc} from "../util/firestore"
+import firestore from "@react-native-firebase/firestore"
+import firebase from "@react-native-firebase/app";
 
 // begin 화면 import
 import {ProfileScreen} from "./profile";
@@ -40,11 +41,21 @@ const ProfileIcon = <AntDesign name="contacts" size={size} color={color} />;
 const CalenIcon = <AntDesign name="calendar" size={size} color={color} />;
 const AlarmIcon = <AntDesign name="bells" size={size} color={color} />;
 
+
 function SearchSreen() {
 
   let [bookNm, setBookNm] = useState(null);
+  let [searchBookList, setSearchBookList] = useState([]);
+  //bookInfo
+  let [bI, setBI] = useState({});
 
-  let[ searchBookList, setSearchBookList] = useState([]);
+  useEffect(()=>{
+    fbcolDoc('user','book_info')
+    .then(documentSnapshot => {
+      setBI(documentSnapshot.data());
+    })
+  },[])
+  console.log("bI",bI)
 
   let searchHandle = (pBookNm) => {
     // console.log("pbookNm",pBookNm);
@@ -67,8 +78,37 @@ function SearchSreen() {
       });
   }
 
-  let handleInsert = (item) => {
-    alert(item.title);
+  let handleInsert = (items,state,setState) => {
+    console.log("setState",userObj.uid);
+    setState(!state);
+    
+    console.log("setState",state);
+    //좋아요 버튼 초기값이 false 값인게 맞다면
+    // false => true
+    if(!state){
+      let book = {
+        book_author : items.author,
+        book_img : items.image,
+        book_isbn : items.isbn,
+        book_nm : items.title
+      }
+      // console.log("setState",items);
+      console.log("setState",book);
+      firestore()
+      .collection('user_profile')
+      .doc(userObj.uid)
+      .update({
+        'user_like_book' : firebase.firestore.FieldValue.arrayUnion(book)
+        })
+      .then(() => {
+        alert("저장되었습니다.")
+      });
+    }
+    //좋아요 버튼 초기값이 false 값인게 맞다면
+    // false => true
+    //else{}
+    
+    
   }
 
   return (
@@ -124,7 +164,7 @@ function HomeScreen({navigation}) {
   useEffect(()=>{
     fbcolDoc('user_profile',userObj.uid)
     .then(documentSnapshot => {
-      // console.log("test", documentSnapshot.data().user_like_book)
+      console.log("test", documentSnapshot.data().user_like_book)
       setBookList(documentSnapshot.data().user_like_book)
     })
   },[]);
@@ -135,7 +175,6 @@ function HomeScreen({navigation}) {
       {bookList.length == 0 
         ? <BookSearchComp navigation={navigation}/>
         : bookList.map((item, idx)=>{
-
         })}
     </ScrollView>
     </SafeAreaView>
