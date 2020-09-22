@@ -142,18 +142,33 @@ function LoginScreen({ navigation }) {
 
   let handlerFaceLogin = () => {
     onFacebookButtonPress().then(() => {
-      navigation.navigate('Main')
       let userObj = auth().currentUser;
-      firestore()
-      .collection('user_profile')
-      .doc(userObj.uid)
-      .set(Object.assign({},bUI,{
-        user_nm : userObj.displayName,
-        user_email : userObj.email,
-        user_img : userObj.photoURL
-      }))
-      .then(() => {
+      fbcolDoc('user_profile',userObj.uid).then(documentSnapshot=>{
+        let userDoc = documentSnapshot.data().user_nm || undefined;
+        if(!userDoc){
+          firestore()
+          .collection('user_profile')
+          .doc(userObj.uid)
+          .set(Object.assign({},bUI,{
+            user_nm : userObj.displayName,
+            user_email : userObj.email,
+            user_img : userObj.photoURL
+          }))
+        }
+        navigation.navigate('Main')
       });
+
+      //파이어베이스 로그인
+      // firestore()
+      // .collection('user_profile')
+      // .doc(userObj.uid)
+      // .set(Object.assign({},bUI,{
+      //   user_nm : userObj.displayName,
+      //   user_email : userObj.email,
+      //   user_img : userObj.photoURL
+      // }))
+      // .then(() => {
+      // });
     })
   }
 
