@@ -12,13 +12,14 @@ import {
 } from 'react-native';
 import {styles, AppColor} from "../style/stylComp";
 import AntDesign from "react-native-vector-icons/dist/AntDesign";
+import Feather from "react-native-vector-icons/dist/Feather";
 
 const size = 25;
 // basic View component 
 export function BView({idx, item, onPress}){
 
     let [clickable, setClickAble] = useState(false);
-    let handlePress = onPress || undefined;
+    let handlePress = onPress;
 
     return (
     <TouchableOpacity key={idx} style={styles.imageView} onPress={handlePress.bind(null,clickable,setClickAble)}>
@@ -38,6 +39,35 @@ export function BView({idx, item, onPress}){
             <View style={{ flexDirection: "column", width : "100%", height: "20%"}}>
                 <Text key={idx}>
                 {item.author}{item.title}
+                </Text>
+            </View>
+        </View>
+    </TouchableOpacity>
+    )
+}
+
+
+export function MView({idx, item, onPress}){
+
+    let [clickable, setClickAble] = useState(false);
+    let handlePress = onPress;
+
+    return (
+    <TouchableOpacity key={idx} style={styles.imageView} onPress={handlePress.bind(null,clickable,setClickAble)}>
+        <Image source={{
+        uri: item.book_img
+        }} style={{ width: "30%", height: "95%", 
+        margin : 3 ,borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10 }}></Image>
+        <View style={{ flexDirection: "column", width : "65%", height: "80%",  marginLeft : 5}}>
+            <View style={{ flexDirection: "column", width : "100%", height: "25%", alignItems : "flex-end"}}>
+                <Feather name="x-circle" size={size} color={AppColor.unlike} />
+            </View>
+            <View style={{ flexDirection: "column", width : "100%", height: "20%"}}>
+                <Text key={idx}>
+                {item.book_author}{item.book_nm}
                 </Text>
             </View>
         </View>

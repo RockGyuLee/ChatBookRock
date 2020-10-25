@@ -17,7 +17,7 @@ import auth from "@react-native-firebase/auth";
 import {styles} from "../style/stylComp";
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import AntDesign from "react-native-vector-icons/dist/AntDesign";
-import { BView } from "../Component/basicComp";
+import { BView, MView } from "../Component/basicComp";
 import {userObj, fbcolDoc} from "../util/firestore"
 import firestore from "@react-native-firebase/firestore"
 import firebase from "@react-native-firebase/app";
@@ -162,21 +162,51 @@ function HomeScreen({navigation}) {
   let [bookList,setBookList] = useState([]);
 
   useEffect(()=>{
+    
     fbcolDoc('user_profile',userObj.uid)
     .then(documentSnapshot => {
-      console.log("test", documentSnapshot.data().user_like_book)
       setBookList(documentSnapshot.data().user_like_book)
     })
+
+    return ()=> {
+      console.log("hello");
+    }
   },[]);
+
+  let handleDelete = (items) => {
+    let checkBookIndex = bookList.findIndex( (v,idx) =>  v.book_isbn == items.book_isbn)
+    console.log("checkIndex",checkBookIndex);
+
+    let removeBookList = bookList 
+    removeBookList.splice(checkBookIndex,1);
+    console.log("remove",removeBookList.length);
+    console.log("remove",bookList.length);
+    firestore()
+      .collection('user_profile')
+      .doc(userObj.uid)
+      .update({
+        'user_like_book' :removeBookList
+        })
+      .then(() => {
+        alert("삭제했습니다..")
+      });
+
+  }
+
+  console.log("remove2",bookList);
+
 
   return (
     <SafeAreaView style={styles.container}>
-    <ScrollView style={styles.scrollView}>
-      {bookList.length == 0 
-        ? <BookSearchComp navigation={navigation}/>
-        : bookList.map((item, idx)=>{
-        })}
-    </ScrollView>
+      <ScrollView style={styles.scrollView}>
+        {bookList.length == 0 
+          ? <BookSearchComp navigation={navigation}/>
+          : bookList.map((item, idx)=>{
+            return(
+              <MView key={idx} idx={idx} item={item} onPress={handleDelete.bind(null, item)}/>
+            )
+          })}
+      </ScrollView>
     </SafeAreaView>
   );
 }
