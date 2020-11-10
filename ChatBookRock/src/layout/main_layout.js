@@ -22,15 +22,19 @@ import {userObj, fbcolDoc} from "../util/firestore"
 import firestore from "@react-native-firebase/firestore"
 import firebase from "@react-native-firebase/app";
 
+//secret
+import {NAVER_CliENT_ID, NAVER_CLIENT_SECRET} from "../secret";
+
+//import { firebase as functions } from '@react-native-firebase/functions';
+import functions from '@react-native-firebase/functions';
+
+
 // begin 화면 import
 import {ProfileScreen} from "./profile";
 import {ChattingScreen} from "./chatting";
 import {CalendarScreen} from "./calendar";
 import {AlarmScreen} from "./alarm";
 //end 화면 import
-
-const NAVER_CliENT_ID     = "9w8zL8ya88VpwOUOEKfz";
-const NAVER_CLIENT_SECRET = "VVcoPpnoo1";
 
 const color = "#800";
 const size = 25;
@@ -162,39 +166,29 @@ function HomeScreen({navigation}) {
   let [bookList,setBookList] = useState([]);
 
   useEffect(()=>{
-    
     fbcolDoc('user_profile',userObj.uid)
     .then(documentSnapshot => {
       setBookList(documentSnapshot.data().user_like_book)
-    })
-
-    return ()=> {
-      console.log("hello");
-    }
+    });
   },[]);
 
   let handleDelete = (items) => {
-    let checkBookIndex = bookList.findIndex( (v,idx) =>  v.book_isbn == items.book_isbn)
-    console.log("checkIndex",checkBookIndex);
-
-    let removeBookList = bookList 
+    let checkBookIndex = bookList.findIndex( (v,idx) =>  v.book_isbn == items.book_isbn);
+    let removeBookList = bookList;
     removeBookList.splice(checkBookIndex,1);
-    console.log("remove",removeBookList.length);
-    console.log("remove",bookList.length);
     firestore()
       .collection('user_profile')
       .doc(userObj.uid)
       .update({
         'user_like_book' :removeBookList
-        })
-      .then(() => {
+      })
+      .then((res) => {
         alert("삭제했습니다..")
       });
-
   }
 
-  console.log("remove2",bookList);
 
+  console.log("bookList",bookList);
 
   return (
     <SafeAreaView style={styles.container}>
