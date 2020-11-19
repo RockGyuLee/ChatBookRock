@@ -27,3 +27,6 @@ firebase 연결 중.
     1. style은 src-style 하단부에 삽입.
     2. firestore util에 생성.
         - collection, document 정보 가지고 불러오기 가능.
+
+### firebase deploy --only functions
+    1. cmd 창 열어서 진행. 

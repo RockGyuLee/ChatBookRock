@@ -59,7 +59,6 @@ function SearchSreen() {
       setBI(documentSnapshot.data());
     })
   },[])
-  console.log("bI",bI)
 
   let searchHandle = (pBookNm) => {
     // console.log("pbookNm",pBookNm);
@@ -77,16 +76,13 @@ function SearchSreen() {
       })
       .then(function(myJson) {
         let item = myJson;
-        console.log(item);
         setSearchBookList(item.items);
       });
   }
 
   let handleInsert = (items,state,setState) => {
-    console.log("setState",userObj.uid);
     setState(!state);
     
-    console.log("setState",state);
     //좋아요 버튼 초기값이 false 값인게 맞다면
     // false => true
     if(!state){
@@ -97,7 +93,6 @@ function SearchSreen() {
         book_nm : items.title
       }
       // console.log("setState",items);
-      console.log("setState",book);
       firestore()
       .collection('user_profile')
       .doc(userObj.uid)
@@ -108,11 +103,20 @@ function SearchSreen() {
         alert("저장되었습니다.")
       });
     }
-    //좋아요 버튼 초기값이 false 값인게 맞다면
-    // false => true
-    //else{}
-    
-    
+    //
+    // true => false
+    else{
+      fbcolDoc('user_profile',userObj.uid)
+      .then(documentSnapshot => {
+        let likeBookList = documentSnapshot.data().user_like_book;
+        let findBookIndex =  likeBookList.findIndex(data => {
+          return data.book_isbn == items.isbn;
+        });
+        likeBookList.splice(findBookIndex,1);
+        firestore().collection('user_profile').doc(userObj.uid)
+        .update({'user_like_book' :likeBookList})
+      });
+    }
   }
 
   return (
@@ -154,11 +158,15 @@ function BookSearchComp(props){
             <Ionicons name="md-search-outline"  size={size} color={styles.appColor.color} />
           <Text style = {{
               color : styles.appColor.color
-          }} >등록된 책이 없습니다.</Text>
+          }} >{props.text}</Text>
           </View>
           
       </TouchableOpacity>
   )
+}
+
+function onError(error) {
+  console.error(error);
 }
 
 function HomeScreen({navigation}) {
@@ -166,38 +174,52 @@ function HomeScreen({navigation}) {
   let [bookList,setBookList] = useState([]);
 
   useEffect(()=>{
-    fbcolDoc('user_profile',userObj.uid)
-    .then(documentSnapshot => {
-      setBookList(documentSnapshot.data().user_like_book)
-    });
-  },[]);
+    let mounted = true;
+     firestore()
+    .collection('user_profile').doc(userObj.uid)
+    .onSnapshot((QuerySnapshot)=>{
+      if(mounted){
+        console.log("hello");
+        setBookList(QuerySnapshot.data().user_like_book)
+      }
+    },onError);
+    return ()=> {mounted = false}
+  },[])
+
 
   let handleDelete = (items) => {
-    let checkBookIndex = bookList.findIndex( (v,idx) =>  v.book_isbn == items.book_isbn);
+    let checkBookIndex = bookList.findIndex( (v) =>  v.book_isbn == items.book_isbn);
     let removeBookList = bookList;
     removeBookList.splice(checkBookIndex,1);
+    console.log("removeBookList",removeBookList);
     firestore()
-      .collection('user_profile')
-      .doc(userObj.uid)
-      .update({
-        'user_like_book' :removeBookList
-      })
-      .then((res) => {
-        alert("삭제했습니다..")
-      });
+    .collection('user_profile')
+    .doc(userObj.uid)
+    .update({
+      'user_like_book' :removeBookList
+    })
+    .then((res) => {
+      setBookList(removeBookList);
+      alert("삭제했습니다..")
+    });
   }
 
-
   console.log("bookList",bookList);
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         {bookList.length == 0 
-          ? <BookSearchComp navigation={navigation}/>
+          ? <BookSearchComp text = {'등록된 책이 없습니다.'} navigation={navigation}/>
           : bookList.map((item, idx)=>{
             return(
-              <MView key={idx} idx={idx} item={item} onPress={handleDelete.bind(null, item)}/>
+              <>
+              {idx == bookList.length - 1
+              ? <>
+                <MView key={idx} idx={idx} item={item} onPress={handleDelete.bind(null, item)}/>
+                <BookSearchComp key={idx} text = {'책을 추가합니다.'} navigation={navigation}/>
+                </>
+              : <MView key={idx} idx={idx} item={item} onPress={handleDelete.bind(null, item)}/>}
+              </>
             )
           })}
       </ScrollView>

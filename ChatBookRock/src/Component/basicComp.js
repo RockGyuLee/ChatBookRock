@@ -13,6 +13,7 @@ import {
 import {styles, AppColor} from "../style/stylComp";
 import AntDesign from "react-native-vector-icons/dist/AntDesign";
 import Feather from "react-native-vector-icons/dist/Feather";
+import SimpleLineIcons from "react-native-vector-icons/dist/SimpleLineIcons";
 
 const size = 25;
 // basic View component 
@@ -53,7 +54,7 @@ export function MView({idx, item, onPress}){
     let handlePress = onPress;
 
     return (
-    <TouchableOpacity key={idx} style={styles.imageView} onPress={handlePress.bind(null,clickable,setClickAble)}>
+    <View key={idx} style={styles.imageView}>
         <Image source={{
         uri: item.book_img
         }} style={{ width: "30%", height: "95%", 
@@ -62,8 +63,13 @@ export function MView({idx, item, onPress}){
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10 }}></Image>
         <View style={{ flexDirection: "column", width : "65%", height: "80%",  marginLeft : 5}}>
-            <View style={{ flexDirection: "column", width : "100%", height: "25%", alignItems : "flex-end"}}>
-                <Feather name="x-circle" size={size} color={AppColor.unlike} />
+            <View style = {{flexDirection: "row-reverse"}}>
+                <TouchableOpacity style={{ width : size }} onPress={handlePress.bind(null,clickable,setClickAble)}>
+                    <Feather name="x-circle" size={size} color={AppColor.unlike} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width : size , marginRight : 15}} onPress={()=>{console.log("hello")}}>
+                    <SimpleLineIcons name="pencil" size={size} color={AppColor.unlike} />
+                </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "column", width : "100%", height: "20%"}}>
                 <Text key={idx}>
@@ -71,6 +77,6 @@ export function MView({idx, item, onPress}){
                 </Text>
             </View>
         </View>
-    </TouchableOpacity>
+    </View>
     )
 }
