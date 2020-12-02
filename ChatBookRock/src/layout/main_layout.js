@@ -179,7 +179,6 @@ function HomeScreen({navigation}) {
     .collection('user_profile').doc(userObj.uid)
     .onSnapshot((QuerySnapshot)=>{
       if(mounted){
-        console.log("hello");
         setBookList(QuerySnapshot.data().user_like_book)
       }
     },onError);
@@ -216,9 +215,10 @@ function HomeScreen({navigation}) {
               {idx == bookList.length - 1
               ? <>
                 <MView key={idx} idx={idx} item={item} onPress={handleDelete.bind(null, item)}/>
-                <BookSearchComp key={idx} text = {'책을 추가합니다.'} navigation={navigation}/>
+                <BookSearchComp key={idx+1} idx={idx+1} text = {'책을 추가합니다.'} navigation={navigation}/>
                 </>
-              : <MView key={idx} idx={idx} item={item} onPress={handleDelete.bind(null, item)}/>}
+              : <MView key={idx} idx={idx} item={item} onPress={handleDelete.bind(null, item)}/>
+              }
               </>
             )
           })}

@@ -72,7 +72,7 @@ export function MView({idx, item, onPress}){
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "column", width : "100%", height: "20%"}}>
-                <Text key={idx}>
+                <Text>
                 {item.book_author}{item.book_nm}
                 </Text>
             </View>
