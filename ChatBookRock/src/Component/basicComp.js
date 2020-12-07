@@ -48,10 +48,10 @@ export function BView({idx, item, onPress}){
 }
 
 
-export function MView({idx, item, onPress}){
+export function MView({idx, item, onDeletePress, onRecordPress}){
 
     let [clickable, setClickAble] = useState(false);
-    let handlePress = onPress;
+    let handleDeletePress = onDeletePress;
 
     return (
     <View key={idx} style={styles.imageView}>
@@ -64,10 +64,10 @@ export function MView({idx, item, onPress}){
         borderBottomRightRadius: 10 }}></Image>
         <View style={{ flexDirection: "column", width : "65%", height: "80%",  marginLeft : 5}}>
             <View style = {{flexDirection: "row-reverse"}}>
-                <TouchableOpacity style={{ width : size }} onPress={handlePress.bind(null,clickable,setClickAble)}>
+                <TouchableOpacity style={{ width : size }} onPress={onDeletePress.bind(null,clickable,setClickAble)}>
                     <Feather name="x-circle" size={size} color={AppColor.unlike} />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ width : size , marginRight : 15}} onPress={()=>{console.log("hello")}}>
+                <TouchableOpacity style={{ width : size , marginRight : 15}} onPress={onRecordPress.bind(null,item)}>
                     <SimpleLineIcons name="pencil" size={size} color={AppColor.unlike} />
                 </TouchableOpacity>
             </View>

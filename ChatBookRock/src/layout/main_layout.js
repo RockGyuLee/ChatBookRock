@@ -25,15 +25,12 @@ import firebase from "@react-native-firebase/app";
 //secret
 import {NAVER_CliENT_ID, NAVER_CLIENT_SECRET} from "../secret";
 
-//import { firebase as functions } from '@react-native-firebase/functions';
-import functions from '@react-native-firebase/functions';
-
-
 // begin 화면 import
 import {ProfileScreen} from "./profile";
 import {ChattingScreen} from "./chatting";
 import {CalendarScreen} from "./calendar";
 import {AlarmScreen} from "./alarm";
+import {RecordSreen} from "./main_layout_sub/record"
 //end 화면 import
 
 const color = "#800";
@@ -169,7 +166,7 @@ function onError(error) {
   console.error(error);
 }
 
-function HomeScreen({navigation}) {
+function HomeScreen({navigation, ...props}) {
 
   let [bookList,setBookList] = useState([]);
 
@@ -186,7 +183,7 @@ function HomeScreen({navigation}) {
   },[])
 
 
-  let handleDelete = (items) => {
+  const handleDelete = (items) => {
     let checkBookIndex = bookList.findIndex( (v) =>  v.book_isbn == items.book_isbn);
     let removeBookList = bookList;
     removeBookList.splice(checkBookIndex,1);
@@ -203,7 +200,13 @@ function HomeScreen({navigation}) {
     });
   }
 
-  console.log("bookList",bookList);
+  const handleRecord = (item) => {
+    //click한 책 정보를 찾아온다.
+    props.extraData(item);
+    //화면 정상적으로 넘어감.
+    //record Component 생성 후 화면 이동.
+    navigation.navigate('record');
+  }
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -214,10 +217,10 @@ function HomeScreen({navigation}) {
               <>
               {idx == bookList.length - 1
               ? <>
-                <MView key={idx} idx={idx} item={item} onPress={handleDelete.bind(null, item)}/>
+                <MView key={idx} idx={idx} item={item} onRecordPress={handleRecord} onDeletePress={handleDelete.bind(null, item)}/>
                 <BookSearchComp key={idx+1} idx={idx+1} text = {'책을 추가합니다.'} navigation={navigation}/>
                 </>
-              : <MView key={idx} idx={idx} item={item} onPress={handleDelete.bind(null, item)}/>
+              : <MView key={idx} idx={idx} item={item} onRecordPress={handleRecord} onDeletePress={handleDelete.bind(null, item)}/>
               }
               </>
             )
@@ -229,11 +232,29 @@ function HomeScreen({navigation}) {
 
 const HomeStack = createStackNavigator();
 
-function HomeLayout(){
+function HomeLayout(props){
+  //처음 render 될 때는 책정보가 undefined
+  const [selectedBookInfo, setSelectedBookInfo] = useState(undefined);
+
+  // 상단부 Layout에서 state를 Main컴포넌트 props로 보낸다.
+
+  const handleUpdate4BookInfo = (evt) => {
+    setSelectedBookInfo(evt);
+    //책정보를 업데이트한다.
+  }
+
+  //update된지 확인.
+  console.log("selectedBookInfo",selectedBookInfo);
+
   return (
       <HomeStack.Navigator>
-        <HomeStack.Screen name ="Main" component = {HomeScreen} ></HomeStack.Screen>
+        <HomeStack.Screen name ="Main">
+          {props => <HomeScreen {...props} extraData={handleUpdate4BookInfo}/>}
+        </HomeStack.Screen>
         <HomeStack.Screen name="search" component={SearchSreen} options={{header:{visible:false}}} />
+        <HomeStack.Screen name="record"  options={{header:{visible:false}}} >
+          {props => <RecordSreen extraData={selectedBookInfo}/>}
+        </HomeStack.Screen>
     </HomeStack.Navigator>
   )
 }
