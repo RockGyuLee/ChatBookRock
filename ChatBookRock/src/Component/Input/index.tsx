@@ -3,7 +3,7 @@ import Styled from 'styled-components/native';
 
 const Container = Styled.View`
   width: 100%;
-  height: 40px;
+  height: ${(props)=> props.height || '40px'};
   padding-left: 16px;
   padding-right: 16px;
   border-radius: 4px;
@@ -19,6 +19,7 @@ interface Props {
   secureTextEntry?: boolean;
   style?: Object;
   clearMode?: boolean;
+  height?: Int16Array;
   onChangeText?: (text: string) => void;
 }
 
@@ -29,9 +30,10 @@ const Input = ({
   style,
   clearMode,
   onChangeText,
+  height
 }: Props) => {
   return (
-    <Container style={style}>
+    <Container style={style} height={height}>
       <InputField
         selectionColor="#FFFFFF"
         secureTextEntry={secureTextEntry}
