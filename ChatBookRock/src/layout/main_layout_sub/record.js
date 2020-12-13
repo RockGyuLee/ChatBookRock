@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import Styled from 'styled-components/native';
 import {View, SafeAreaView, Text, TextInput} from 'react-native';
 import Input from '../../Component/Input';
+import {AppColor} from "../../style/stylComp";
 
 const Container = Styled.SafeAreaView`
   flex: 1;
@@ -34,9 +35,9 @@ export function RecordSreen(props){
         />
 
         <View  style={{flexDirection: "row",marginTop : 15, marginBottom: 15}}>
-          <View style={{flex: 0.6,   borderBottomColor: 'black', borderBottomWidth: 1, marginBottom: 7}}/>
+          <View style={{flex: 0.6,   borderBottomColor: '#FF4001', borderBottomWidth: 1, marginBottom: 7}}/>
           <View style={{flex : 0.3, }}>
-           <Text style={{textAlign : 'right'}}>{nowDate()}</Text>
+           <Text style={{textAlign : 'right', color: '#FF4001'}}>{nowDate()}</Text>
           </View>
         </View>
 
@@ -49,7 +50,23 @@ export function RecordSreen(props){
           }}
           height={'220px'}
           placeholder="내용을 입력하세요 :)"
-          // onChangeText = {id=>setUserId(id)} 
+        />
+
+        <View  style={{flexDirection: "row",marginTop : 15, marginBottom: 15}}>
+          <View style={{flex: 0.6,   borderBottomColor: '#FF4001', borderBottomWidth: 1, marginBottom: 7}}/>
+          <View style={{flex : 0.3, }}>
+           <Text style={{textAlign : 'right', color: '#FF4001'}}>사진</Text>
+          </View>
+        </View>
+
+        <View
+          style={{
+            marginTop : 15,
+            marginBottom: 16,
+            borderColor : AppColor.color,
+            borderWidth : 2,
+            height: 150,
+          }}
         />
         
         </Container>

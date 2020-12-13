@@ -35,6 +35,7 @@ const Input = ({
   return (
     <Container style={style} height={height}>
       <InputField
+        editable = {true}
         selectionColor="#FFFFFF"
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType ? keyboardType : 'default'}
@@ -43,6 +44,8 @@ const Input = ({
         allowFontScaling={false}
         placeholderTextColor="#89B2E9"
         placeholder={placeholder}
+        multiline={true}
+        textAlignVertical= {'top'}
         clearButtonMode={clearMode ? 'while-editing' : 'never'}
         onChangeText={onChangeText}
       />
