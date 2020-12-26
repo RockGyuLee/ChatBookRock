@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import Styled from 'styled-components/native';
-import {View, SafeAreaView, Text, TextInput} from 'react-native';
+import {View, SafeAreaView, Text, TextInput, Button} from 'react-native';
 import Input from '../../Component/Input';
 import {AppColor} from "../../style/stylComp";
 
@@ -25,7 +25,7 @@ export function RecordSreen(props){
         <Container>
           <Input
           style={{
-            marginTop : 70,
+            marginTop : 30,
             marginBottom: 15,
             borderColor: '#89B2E9', 
             borderWidth: 2 
@@ -44,7 +44,7 @@ export function RecordSreen(props){
         <Input
           style={{
             marginTop : 15,
-            marginBottom: 16,
+            marginBottom: 10,
             borderColor: '#89B2E9', 
             borderWidth: 2 
           }}
@@ -62,12 +62,27 @@ export function RecordSreen(props){
         <View
           style={{
             marginTop : 15,
-            marginBottom: 16,
+            marginBottom: 5,
             borderColor : AppColor.color,
             borderWidth : 2,
             height: 150,
           }}
         />
+
+        <View 
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width : '100%',
+            height : '5%',
+          }}>
+            <View style={{width : '49%'}}>
+              <Button title={'확인'} onPress={()=>{console.log("hello")}}/>
+            </View>
+            <View style={{width : '49%'}}>
+              <Button title={'취소'}/>
+            </View>
+        </View>
         
         </Container>
     )

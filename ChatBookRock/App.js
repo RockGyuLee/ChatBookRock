@@ -118,15 +118,28 @@ function LoginScreen({ navigation }) {
 
 
   let loginExecute = (puserId, puserPw) => {
-    console.log("loginExecute",puserId,puserPw);
     if(puserId == "" || puserPw == "") {
       alert("아이디와 패스워드를 입력해주세요.")
     }else{
       auth()
       .signInWithEmailAndPassword(puserId, puserPw)
       .then(() => {
-        console.log("login")
-        navigation.navigate('Main')
+        //파이어베이스 로그인
+        let userObj = auth().currentUser;
+        fbcolDoc('user_profile',userObj.uid).then(documentSnapshot=>{
+          let userDoc = documentSnapshot.data() || undefined;
+          if(!userDoc){
+            firestore()
+            .collection('user_profile')
+            .doc(userObj.uid)
+            .set(Object.assign({},bUI,{
+              user_nm : userObj.displayName,
+              user_email : userObj.email,
+              user_img : userObj.photoURL
+            }));
+          }
+          navigation.navigate('Main')
+        })
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -143,8 +156,11 @@ function LoginScreen({ navigation }) {
   let handlerFaceLogin = () => {
     onFacebookButtonPress().then(() => {
       let userObj = auth().currentUser;
+      console.log(userObj);
+
       fbcolDoc('user_profile',userObj.uid).then(documentSnapshot=>{
-        let userDoc = documentSnapshot.data().user_nm || undefined;
+        let userDoc = documentSnapshot.data() || undefined;
+        console.log("documentSnapshot",userDoc);
         if(!userDoc){
           firestore()
           .collection('user_profile')
@@ -153,22 +169,10 @@ function LoginScreen({ navigation }) {
             user_nm : userObj.displayName,
             user_email : userObj.email,
             user_img : userObj.photoURL
-          }))
+          }));
         }
         navigation.navigate('Main')
-      });
-
-      //파이어베이스 로그인
-      // firestore()
-      // .collection('user_profile')
-      // .doc(userObj.uid)
-      // .set(Object.assign({},bUI,{
-      //   user_nm : userObj.displayName,
-      //   user_email : userObj.email,
-      //   user_img : userObj.photoURL
-      // }))
-      // .then(() => {
-      // });
+      })
     })
   }
 

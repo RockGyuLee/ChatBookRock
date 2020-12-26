@@ -18,7 +18,7 @@ import {styles} from "../style/stylComp";
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import AntDesign from "react-native-vector-icons/dist/AntDesign";
 import { BView, MView } from "../Component/basicComp";
-import {userObj, fbcolDoc} from "../util/firestore"
+import { fbcolDoc} from "../util/firestore"
 import firestore from "@react-native-firebase/firestore"
 import firebase from "@react-native-firebase/app";
 
@@ -42,6 +42,7 @@ const ProfileIcon = <AntDesign name="contacts" size={size} color={color} />;
 const CalenIcon = <AntDesign name="calendar" size={size} color={color} />;
 const AlarmIcon = <AntDesign name="bells" size={size} color={color} />;
 
+let userObj = auth().currentUser;
 
 function SearchSreen() {
 
@@ -83,13 +84,12 @@ function SearchSreen() {
     //좋아요 버튼 초기값이 false 값인게 맞다면
     // false => true
     if(!state){
-      let book = {
-        book_author : items.author,
-        book_img : items.image,
-        book_isbn : items.isbn,
-        book_nm : items.title
-      }
-      // console.log("setState",items);
+      let book = Object.assign(bI,{
+          book_author : items.author,
+          book_img : items.image,
+          book_isbn : items.isbn,
+          book_nm : items.title,
+        })
       firestore()
       .collection('user_profile')
       .doc(userObj.uid)
@@ -180,7 +180,7 @@ function HomeScreen({navigation, ...props}) {
       }
     },onError);
     return ()=> {mounted = false}
-  },[])
+  },[userObj.uid])
 
 
   const handleDelete = (items) => {
