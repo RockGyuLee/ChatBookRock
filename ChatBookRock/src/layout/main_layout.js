@@ -42,9 +42,9 @@ const ProfileIcon = <AntDesign name="contacts" size={size} color={color} />;
 const CalenIcon = <AntDesign name="calendar" size={size} color={color} />;
 const AlarmIcon = <AntDesign name="bells" size={size} color={color} />;
 
-let userObj = auth().currentUser;
-
 function SearchSreen() {
+
+  let userObj = auth().currentUser;
 
   let [bookNm, setBookNm] = useState(null);
   let [searchBookList, setSearchBookList] = useState([]);
@@ -168,6 +168,8 @@ function onError(error) {
 
 function HomeScreen({navigation, ...props}) {
 
+  let userObj = auth().currentUser;
+
   let [bookList,setBookList] = useState([]);
 
   useEffect(()=>{
@@ -187,7 +189,6 @@ function HomeScreen({navigation, ...props}) {
     let checkBookIndex = bookList.findIndex( (v) =>  v.book_isbn == items.book_isbn);
     let removeBookList = bookList;
     removeBookList.splice(checkBookIndex,1);
-    console.log("removeBookList",removeBookList);
     firestore()
     .collection('user_profile')
     .doc(userObj.uid)
@@ -242,9 +243,6 @@ function HomeLayout(props){
     setSelectedBookInfo(evt);
     //책정보를 업데이트한다.
   }
-
-  //update된지 확인.
-  console.log("selectedBookInfo",selectedBookInfo);
 
   return (
       <HomeStack.Navigator>

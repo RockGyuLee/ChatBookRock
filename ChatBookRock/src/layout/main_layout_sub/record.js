@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from "react";
 import Styled from 'styled-components/native';
-import {View, SafeAreaView, Text, TextInput, Button} from 'react-native';
+import {View, TouchableOpacity, Text, TextInput, Button, Image} from 'react-native';
 import Input from '../../Component/Input';
 import {AppColor} from "../../style/stylComp";
+import AntDesign from "react-native-vector-icons/dist/AntDesign";
+//이미지 picker library
+import {launchCamera, launchImageLibrary} from "react-native-image-picker"
 
 const Container = Styled.SafeAreaView`
   flex: 1;
@@ -13,14 +16,30 @@ const nowDate = () => {
   let date = new Date().getDate();
   let month = new Date().getMonth()+1;
   let year = new Date().getFullYear();
-  console.log(date,month,year)
   return year+' . '+ month + ' . ' + date;
 }
 
+const imagePickerOption = {
+  title : "사진|앨범",
+  mediaType : "photo"
+}
+
 export function RecordSreen(props){
+
+  const [imageUri, setImageUri] = useState(null);
     //정상적으로 컴포넌트 이동 완료.
     console.log("Record Data", props.extraData.book_author, new Date);
-    console.log(nowDate());
+
+    let handleGalleryOrCamera = () => { 
+      console.log("사진,카메라")
+      launchCamera(imagePickerOption, (data)=>{
+        console.log(data)
+        setImageUri(data.uri)
+      });
+    }
+
+    console.log("imageUri",imageUri)
+
     return (
         <Container>
           <Input
@@ -66,8 +85,34 @@ export function RecordSreen(props){
             borderColor : AppColor.color,
             borderWidth : 2,
             height: 150,
+            flexDirection: "row",
           }}
-        />
+        >
+         
+          <Image 
+            style={{
+              margin : 5,
+              borderColor : AppColor.color,
+              borderWidth : 2,
+              width : 100,
+              height: 100,
+              }} 
+            source={{uri:imageUri}}/>
+          <TouchableOpacity
+            style={{
+              margin : 5,
+              paddingTop : 35,
+              paddingLeft : 35,
+              borderColor : AppColor.color,
+              borderWidth : 2,
+              width : 100,
+              height: 100,
+            }}
+            onPress={handleGalleryOrCamera}
+          >
+            <AntDesign name={"camerao"} size={20} color={AppColor.color}/>
+          </TouchableOpacity>
+        </View>
 
         <View 
           style={{
