@@ -201,9 +201,15 @@ function HomeScreen({navigation, ...props}) {
     });
   }
 
-  const handleRecord = (item) => {
+  const handleRecord = (idx, itemList) => {
+    let propData = {
+      idx,
+      itemList
+    };
+
+    console.log(propData)
     //click한 책 정보를 찾아온다.
-    props.extraData(item);
+    props.extraData(propData);
     //화면 정상적으로 넘어감.
     //record Component 생성 후 화면 이동.
     navigation.navigate('record');
@@ -218,10 +224,10 @@ function HomeScreen({navigation, ...props}) {
               <>
               {idx == bookList.length - 1
               ? <>
-                <MView key={idx} idx={idx} item={item} onRecordPress={handleRecord} onDeletePress={handleDelete.bind(null, item)}/>
+                <MView key={idx} idx={idx} itemList={bookList} item={item} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
                 <BookSearchComp key={idx+1} idx={idx+1} text = {'책을 추가합니다.'} navigation={navigation}/>
                 </>
-              : <MView key={idx} idx={idx} item={item} onRecordPress={handleRecord} onDeletePress={handleDelete.bind(null, item)}/>
+              : <MView key={idx} idx={idx} itemList={bookList} item={item} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
               }
               </>
             )
