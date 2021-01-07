@@ -30,17 +30,25 @@ const imagePickerOption = {
 export function RecordSreen(props){
   let userObj = auth().currentUser;
   let {idx, itemList} = props.extraData;
-
+  const [title, setTitle] = useState(itemList[idx].book_title);
+  const [contents, setContents] = useState(itemList[idx].book_content);
   const [imageUri, setImageUri] = useState(itemList[idx].update_book_uri);
+
+  console.log("title :",title,"contents :",contents);
 
 
   const handleGalleryOrCamera = () => {
     launchCamera(imagePickerOption, (data)=>{
-      console.log(data)
-      setImageUri([].concat(data.uri))
+      if(data.didCancel){
+        return
+      }
+      let urlLength = imageUri.concat(data.uri).length;
+      if(urlLength > 3){
+        return alert("3개 이상은 저장할 수 없습니다.");
+      }
+      setImageUri(imageUri.concat(data.uri))
     });
   }
-
 
   const handleUpdate4BookUri = () => {
     let updateUserBookList = itemList[idx];
@@ -107,30 +115,55 @@ export function RecordSreen(props){
           flexDirection: "row",
         }}
       >
-        
-        <Image 
-          style={{
-            margin : 5,
-            borderColor : AppColor.color,
-            borderWidth : 2,
-            width : 100,
-            height: 100,
-            }} 
-          source={{uri:imageUri[0]}}/>
-        <TouchableOpacity
-          style={{
-            margin : 5,
-            paddingTop : 35,
-            paddingLeft : 35,
-            borderColor : AppColor.color,
-            borderWidth : 2,
-            width : 100,
-            height: 100,
-          }}
-          onPress={handleGalleryOrCamera}
-        >
-          <AntDesign name={"camerao"} size={20} color={AppColor.color}/>
-        </TouchableOpacity>
+        {
+          imageUri.map((data, idx) => {
+            if(imageUri.length - 1 == idx){
+              return (
+                <>
+                  <Image 
+                    key={idx}
+                    style={{
+                      margin : 5,
+                      borderColor : AppColor.color,
+                      borderWidth : 2,
+                      width : "22.5%",
+                      height: 100,
+                      }} 
+                    source={{uri:data}}
+                  />
+                  <TouchableOpacity
+                    key={"camera"}
+                    style={{
+                      margin : 5,
+                      paddingTop : 35,
+                      paddingLeft : 35,
+                      borderColor : AppColor.color,
+                      borderWidth : 2,
+                      width : "22.5%",
+                      height: 100,
+                    }}
+                    onPress={handleGalleryOrCamera}
+                  >
+                    <AntDesign name={"camerao"} size={20} color={AppColor.color}/>
+                  </TouchableOpacity>
+                </>
+              )
+            }
+            return(
+                <Image 
+                  key={idx}
+                  style={{
+                    margin : 5,
+                    borderColor : AppColor.color,
+                    borderWidth : 2,
+                    width : "22.5%",
+                    height: 100,
+                    }} 
+                  source={{uri:data}}
+                />
+            )
+          })
+        }
       </View>
 
       <View 
