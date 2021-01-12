@@ -48,14 +48,18 @@ export function BView({idx, item, onPress}){
 }
 
 
-export function MView({idx, item, onDeletePress, onRecordPress, itemList}){
+export function MView({idx, item, onTouchAble, onDeletePress, onRecordPress, itemList}){
 
     let [clickable, setClickAble] = useState(false);
     let handleDeletePress = onDeletePress;
 
+    let handleMove2Detail = () => {
+        //onTouchAble( idx, itemList)
+    }
+
 
     return (
-    <View key={idx} style={styles.imageView}>
+    <TouchableOpacity key={idx} style={styles.imageView} onPress={onTouchAble.bind(null,idx,itemList)}>
         <Image source={{
         uri: itemList[idx].book_img
         }} style={{ width: "30%", height: "95%", 
@@ -78,6 +82,6 @@ export function MView({idx, item, onDeletePress, onRecordPress, itemList}){
                 </Text>
             </View>
         </View>
-    </View>
+    </TouchableOpacity>
     )
 }

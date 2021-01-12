@@ -10,11 +10,12 @@ const Container = Styled.View`
 `;
 const InputField = Styled.TextInput`
   flex: 1;
-  color: #89B2E9;
+  color: #000000;
 `;
 
 interface Props {
   placeholder?: string;
+  value?: string;
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
   secureTextEntry?: boolean;
   style?: Object;
@@ -28,6 +29,7 @@ const Input = ({
   keyboardType,
   secureTextEntry,
   style,
+  value,
   clearMode,
   onChangeText,
   height
@@ -43,6 +45,7 @@ const Input = ({
         autoCorrect={false}
         allowFontScaling={false}
         placeholderTextColor="#89B2E9"
+        value={value}
         placeholder={placeholder}
         multiline={true}
         textAlignVertical= {'top'}

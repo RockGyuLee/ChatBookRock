@@ -15,7 +15,7 @@ const Container = Styled.SafeAreaView`
   background-color: white;
 `;
 
-const nowDate = () => {
+export const nowDate = () => {
   let date = new Date().getDate();
   let month = new Date().getMonth()+1;
   let year = new Date().getFullYear();
@@ -28,8 +28,10 @@ const imagePickerOption = {
 }
 
 export function RecordSreen(props){
+
   let userObj = auth().currentUser;
-  let {idx, itemList} = props.extraData;
+  let {idx, itemList, navigation} = props.extraData;
+  console.log("propr",navigation);
   const [title, setTitle] = useState(itemList[idx].book_title);
   const [contents, setContents] = useState(itemList[idx].book_content);
   const [imageUri, setImageUri] = useState(itemList[idx].update_book_uri);
@@ -56,7 +58,11 @@ export function RecordSreen(props){
 
     copyAndRemoveItemList.splice(idx,1);
     
-    let objAssignBookItem = Object.assign({},updateUserBookList,{update_book_uri : imageUri});
+    let objAssignBookItem = Object.assign({},updateUserBookList,{
+      'book_title' : title,
+      'book_content' : contents,
+      'update_book_uri' : imageUri
+    });
     
     copyAndRemoveItemList.splice(idx,0,objAssignBookItem)
     firestore()
@@ -76,8 +82,9 @@ export function RecordSreen(props){
           borderColor: '#89B2E9', 
           borderWidth: 2 
         }}
+        value={title}
         placeholder={`${itemList[idx].book_title}`}
-        // onChangeText = {id=>setUserId(id)} 
+        onChangeText = {title=>setTitle(title)} 
       />
 
       <View  style={{flexDirection: "row",marginTop : 15, marginBottom: 15}}>
@@ -92,10 +99,12 @@ export function RecordSreen(props){
           marginTop : 15,
           marginBottom: 10,
           borderColor: '#89B2E9', 
-          borderWidth: 2 
+          borderWidth: 2
         }}
         height={'220px'}
+        value={contents}
         placeholder="내용을 입력하세요 :)"
+        onChangeText = {contents=>setContents(contents)} 
       />
 
       <View  style={{flexDirection: "row",marginTop : 15, marginBottom: 15}}>
@@ -177,7 +186,7 @@ export function RecordSreen(props){
             <Button title={'확인'} onPress={handleUpdate4BookUri}/>
           </View>
           <View style={{width : '49%'}}>
-            <Button title={'취소'}/>
+            <Button title={'취소'} onPress={()=>{navigation.goBack()}}/>
           </View>
       </View>
       

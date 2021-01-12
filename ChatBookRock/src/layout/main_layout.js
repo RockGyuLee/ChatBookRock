@@ -30,6 +30,7 @@ import {ProfileScreen} from "./profile";
 import {ChattingScreen} from "./chatting";
 import {CalendarScreen} from "./calendar";
 import {AlarmScreen} from "./alarm";
+import {DetailScreen} from "./main_layout_sub/detail";
 import {RecordSreen} from "./main_layout_sub/record"
 //end 화면 import
 
@@ -201,14 +202,26 @@ function HomeScreen({navigation, ...props}) {
     });
   }
 
+  const handleDetail = (idx,itemList) => {
+    let propData = {
+      idx,
+      itemList,
+      navigation
+    };
+    props.extraData(propData);
+    navigation.navigate('detail');
+  }
+
   const handleRecord = (idx, itemList) => {
     let propData = {
       idx,
-      itemList
+      itemList,
+      navigation
     };
 
     //click한 책 정보를 찾아온다.
     props.extraData(propData);
+    
     //화면 정상적으로 넘어감.
     //record Component 생성 후 화면 이동.
     navigation.navigate('record');
@@ -222,13 +235,13 @@ function HomeScreen({navigation, ...props}) {
             if(bookList.length - 1 == idx) {
               return (
                 <>
-                  <MView key={idx+item.book_isbn} idx={idx} itemList={bookList} item={item} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
+                  <MView key={idx+item.book_isbn} idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
                   <BookSearchComp key={idx+"Search"} idx={idx+1} text = {'책을 추가합니다.'} navigation={navigation}/>
                 </>
               )
             }
             return(
-              <MView key={idx+item.book_isbn} idx={idx} itemList={bookList} item={item} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
+              <MView key={idx+item.book_isbn} idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
             )
           })
         }
@@ -255,9 +268,12 @@ function HomeLayout(props){
         <HomeStack.Screen name ="Main">
           {props => <HomeScreen key={"1"} {...props} extraData={handleUpdate4BookInfo}/>}
         </HomeStack.Screen>
+        <HomeStack.Screen name="detail" options={{header:{visible:false}}} >
+          {props => <DetailScreen key={"1-1"} extraData={selectedBookInfo}/>}
+        </HomeStack.Screen>
         <HomeStack.Screen name="search" component={SearchSreen} options={{header:{visible:false}}} />
         <HomeStack.Screen name="record"  options={{header:{visible:false}}} >
-          {props => <RecordSreen key={"1-1"} extraData={selectedBookInfo}/>}
+          {props => <RecordSreen key={"1-2"} extraData={selectedBookInfo}/>}
         </HomeStack.Screen>
     </HomeStack.Navigator>
   )
