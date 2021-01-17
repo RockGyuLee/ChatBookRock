@@ -263,7 +263,7 @@ function App() {
       <Stack.Navigator >
         <Stack.Screen name="Home" component={LoginScreen} options={{ title: 'Login/Sign' }}>
         </Stack.Screen>
-        <Stack.Screen name="Main" component={DetailsScreen}  options={{}}/>
+        <Stack.Screen name="Main" component={DetailsScreen}  options={{title: '책방'}}/>
         <Stack.Screen name="Sign" component={SignUp} options={{ title: '회원가입' }}/>
       </Stack.Navigator>
     </NavigationContainer>

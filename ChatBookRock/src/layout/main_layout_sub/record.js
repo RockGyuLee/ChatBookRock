@@ -71,6 +71,11 @@ export function RecordSreen(props){
     .update({
       'user_like_book' : copyAndRemoveItemList
     })
+    navigation.goBack()
+  }
+
+  const handleDelete4BookUri = () => {
+    console.log("사진 삭제")
   }
 
   return (
@@ -129,17 +134,25 @@ export function RecordSreen(props){
             if(imageUri.length - 1 == idx){
               return (
                 <>
-                  <Image 
-                    key={idx}
+                  <TouchableOpacity
                     style={{
-                      margin : 5,
-                      borderColor : AppColor.color,
-                      borderWidth : 2,
-                      width : "22.5%",
-                      height: 100,
+                    margin : 5,
+                    borderColor : AppColor.color,
+                    borderWidth : 2,
+                    width : "22.5%",
+                    height: 100,
+                    }} 
+                    onPress={handleDelete4BookUri}
+                  >
+                    <Image 
+                      key={idx}
+                      style={{
+                        width : "100%",
+                        height: "100%",
                       }} 
-                    source={{uri:data}}
-                  />
+                      source={{uri:data}}
+                    />
+                  </TouchableOpacity>
                   <TouchableOpacity
                     key={"camera"}
                     style={{
@@ -159,17 +172,24 @@ export function RecordSreen(props){
               )
             }
             return(
+              <TouchableOpacity
+                style={{
+                margin : 5,
+                borderColor : AppColor.color,
+                borderWidth : 2,
+                width : "22.5%",
+                height: 100,
+                }} 
+              >
                 <Image 
                   key={idx}
                   style={{
-                    margin : 5,
-                    borderColor : AppColor.color,
-                    borderWidth : 2,
-                    width : "22.5%",
-                    height: 100,
+                    width : "100%",
+                    height: "100%",
                     }} 
                   source={{uri:data}}
                 />
+              </TouchableOpacity>
             )
           })
         }

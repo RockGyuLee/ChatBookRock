@@ -98,7 +98,6 @@ function SearchSreen() {
         'user_like_book' : firebase.firestore.FieldValue.arrayUnion(book)
         })
       .then(() => {
-        alert("저장되었습니다.")
       });
     }
     //
@@ -198,7 +197,6 @@ function HomeScreen({navigation, ...props}) {
     })
     .then((res) => {
       setBookList(removeBookList);
-      alert("삭제했습니다..")
     });
   }
 
@@ -265,10 +263,10 @@ function HomeLayout(props){
 
   return (
       <HomeStack.Navigator>
-        <HomeStack.Screen name ="Main">
+        <HomeStack.Screen name ="Main" options={{ title: '책 다이어리' }}>
           {props => <HomeScreen key={"1"} {...props} extraData={handleUpdate4BookInfo}/>}
         </HomeStack.Screen>
-        <HomeStack.Screen name="detail" options={{header:{visible:false}}} >
+        <HomeStack.Screen name="detail" options={{ title: '책 다이어리' }} options={{header:{visible:false}}} >
           {props => <DetailScreen key={"1-1"} extraData={selectedBookInfo}/>}
         </HomeStack.Screen>
         <HomeStack.Screen name="search" component={SearchSreen} options={{header:{visible:false}}} />
