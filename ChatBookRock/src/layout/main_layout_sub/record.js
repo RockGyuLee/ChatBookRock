@@ -38,6 +38,8 @@ export function RecordSreen(props){
 
   console.log("title :",title,"contents :",contents);
 
+  console.log("imageUri",itemList[idx].update_book_uri);
+
 
   const handleGalleryOrCamera = () => {
     launchCamera(imagePickerOption, (data)=>{
@@ -71,7 +73,7 @@ export function RecordSreen(props){
     .update({
       'user_like_book' : copyAndRemoveItemList
     })
-    navigation.goBack()
+    navigation.navigate("Main")
   }
 
   const handleDelete4BookUri = () => {
@@ -130,7 +132,23 @@ export function RecordSreen(props){
         }}
       >
         {
-          imageUri.map((data, idx) => {
+         imageUri.length == 0 
+         ? <TouchableOpacity
+            key={"camera"}
+            style={{
+              margin : 5,
+              paddingTop : 35,
+              paddingLeft : 35,
+              borderColor : AppColor.color,
+              borderWidth : 2,
+              width : "22.5%",
+              height: 100,
+            }}
+            onPress={handleGalleryOrCamera}
+          >
+            <AntDesign name={"camerao"} size={20} color={AppColor.color}/>
+          </TouchableOpacity>
+         : imageUri.map((data, idx) => {
             if(imageUri.length - 1 == idx){
               return (
                 <>
