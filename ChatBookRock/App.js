@@ -12,6 +12,7 @@ import {
   View, 
   Text,
   TouchableOpacity,
+  TextInput
 } from "react-native";
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -106,17 +107,13 @@ function LoginScreen({ navigation }) {
   // }))
 
   useEffect(()=>{
+    SplashScreen.hide();
     fbcolDoc('user','basic_user_info')
     .then(documentSnapshot => {
       setBUI(documentSnapshot.data());
     })
   },[])
   
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
-
-
   let loginExecute = (puserId, puserPw) => {
     if(puserId == "" || puserPw == "") {
       alert("아이디와 패스워드를 입력해주세요.")
@@ -151,6 +148,10 @@ function LoginScreen({ navigation }) {
         }
       });
     }
+  }
+
+  let move2SignUp = () => {
+    navigation.navigate('Sign')
   }
 
   let handlerFaceLogin = () => {
@@ -221,10 +222,23 @@ function LoginScreen({ navigation }) {
           onChangeText = {pw=>setUserPw(pw)}
         />
         <Button
-          style={{marginBottom: 24}}
+          style={{marginBottom: 20}}
           label="로그인"
           onPress={loginExecute.bind(null, userId,userPw)}
         />
+        <Text 
+          style={{marginBottom: 20, textAlign : 'center', color: 'gray', }}
+          onPress={move2SignUp}
+        >회원이 아니신가요? (회원가입)</Text>
+
+        <View  style={{flexDirection: "row",marginTop : 15, marginBottom: 15}}>
+          <View style={{flex: 0.3,   borderBottomColor: 'gray', borderBottomWidth: 1, marginBottom: 7}}/>
+          <View style={{flex : 0.4 }}>
+            <Text style={{textAlign : 'center', color: 'gray'}}>간편 로그인</Text>
+          </View>
+          <View style={{flex: 0.3,   borderBottomColor: 'gray', borderBottomWidth: 1, marginBottom: 7}}/>
+        </View>
+
         <TouchableOpacity style={{
           flexDirection : "row",
           backgroundColor : BrandColor.FaceBook,

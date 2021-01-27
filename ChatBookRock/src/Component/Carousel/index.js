@@ -21,7 +21,6 @@ const convertAlign = {
 */
 function Carousel({ align, scrollHeight, imageHeight, imageUri = [] }){
   const scrollX = useRef(new Animated.Value(0)).current;
-  const images = new Array(6).fill('https://images.unsplash.com/photo-1556740749-887f6717d7e4');
 
   const { width: windowWidth } = useWindowDimensions();
 

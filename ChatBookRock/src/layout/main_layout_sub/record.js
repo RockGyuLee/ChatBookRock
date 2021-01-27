@@ -76,8 +76,14 @@ export function RecordSreen(props){
     navigation.navigate("Main")
   }
 
-  const handleDelete4BookUri = () => {
-    console.log("사진 삭제")
+  const handleDelete4BookUri = (idx) => {
+    let deleteBookList = [...imageUri];
+
+    deleteBookList.splice(idx,1);
+
+    setImageUri(deleteBookList)
+
+    // console.log("사진 삭제",deleteBookList,imageUri[idx])
   }
 
   return (
@@ -132,6 +138,7 @@ export function RecordSreen(props){
         }}
       >
         {
+          //이미지 데이터가 없으면 카메라 View 컴포넌트만 보여준다.
          imageUri.length == 0 
          ? <TouchableOpacity
             key={"camera"}
@@ -160,7 +167,7 @@ export function RecordSreen(props){
                     width : "22.5%",
                     height: 100,
                     }} 
-                    onPress={handleDelete4BookUri}
+                    onPress={handleDelete4BookUri.bind(null, idx)}
                   >
                     <Image 
                       key={idx}
@@ -198,6 +205,7 @@ export function RecordSreen(props){
                 width : "22.5%",
                 height: 100,
                 }} 
+                onPress={handleDelete4BookUri.bind(null, idx)}
               >
                 <Image 
                   key={idx}
