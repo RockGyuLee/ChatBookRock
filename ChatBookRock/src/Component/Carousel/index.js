@@ -81,7 +81,7 @@ function Carousel({ align, scrollHeight, imageHeight, imageUri = [] }){
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center"

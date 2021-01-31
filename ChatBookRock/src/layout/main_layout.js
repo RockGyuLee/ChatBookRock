@@ -123,6 +123,7 @@ function SearchSreen() {
           style={{width : "90%"}}
           placeholder="책 제목을 입력해주세요."
           textAlign={'left'}
+          //onChangeText func에서 디바운스 사용.
           onChangeText = {nm=>setBookNm(nm)}
       />
       <Ionicons name="md-search-outline" size={size} color={styles.appColor.color} onPress={searchHandle.bind(null,bookNm)}/>
