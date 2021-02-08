@@ -28,9 +28,16 @@ firebase 연결 중.
     4. git pull로 github에 변경된 내용 추가 후 git status로 확인.
     5. git push 하기전에는 반드시 merge가 된 내용이 있는지 없는지 확인 후 push해야한다. 반드시 명심!!!
 
-## 공통 Style
+## 공통 Style, firestore
     1. style은 src-style 하단부에 삽입.
+    2. firestore util에 생성.
+        - collection, document 정보 가지고 불러오기 가능.
 
+<<<<<<< HEAD
 ### Test
     1. 안녕하세요.
+>>>>>>> develop
+=======
+### firebase deploy --only functions
+    1. cmd 창 열어서 진행. 
 >>>>>>> develop

@@ -1,8 +1,16 @@
 import { StyleSheet} from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+
 export const styles = StyleSheet.create({
+
+    appColor : {
+      color : "#89B2E9",
+    },
+    container: {
+      flex: 1,
+    },
     scrollView: {
-      backgroundColor: Colors.lighter,
+      backgroundColor: Colors.Header,
     },
     engine: {
       position: 'absolute',
@@ -15,11 +23,25 @@ export const styles = StyleSheet.create({
       marginTop: 32,
       paddingHorizontal: 24,
     },
+    searchTextInput : {
+      borderColor: "#89B2E9",
+      backgroundColor: "white",
+      borderWidth: 2,
+      margin: 10,
+      flexDirection: "row",
+      alignItems: "center",
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 10
+    },
     textArea : {
-      marginTop: 16,
+      marginTop: 10,
+      marginLeft : 10,
+      width : "80%",
       paddingVertical: 8,
-      borderWidth: 4,
-      borderColor: "#20232a",
+      borderWidth: 2,
+      borderColor: "#89B2E9",
       borderRadius: 6,
       backgroundColor: "#FFFFFF",
       color: "#20232a",
@@ -49,5 +71,35 @@ export const styles = StyleSheet.create({
       paddingRight: 12,
       textAlign: 'right',
     },
+    panelView : {
+      backgroundColor: "white",
+      borderColor: "#89B2E9",
+      borderWidth: 2,
+      height: 120,
+      margin: 10,
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 10
+    },
+    imageView : {
+      flexDirection : "row",
+      backgroundColor: "white",
+      alignItems: "center",
+      borderColor: "#89B2E9",
+      borderWidth: 2,
+      height: 120,
+      margin: 10,
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 10,
+      
+    }
   });
-  
+
+export const AppColor = {
+  color : "#89B2E9",
+  unlike : "#000000",
+  like : "#FD1D1D"
+}

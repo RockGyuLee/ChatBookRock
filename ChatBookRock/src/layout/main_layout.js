@@ -3,37 +3,66 @@ import {
     SafeAreaView,
     ScrollView,
     View,
+    TouchableOpacity,
     Text,
     TextInput,
+    Image,
     StatusBar,
     Button
   } from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import auth from "@react-native-firebase/auth";
 import {styles} from "../style/stylComp";
 import Ionicons from "react-native-vector-icons/dist/Ionicons";
 import AntDesign from "react-native-vector-icons/dist/AntDesign";
+import { BView, MView } from "../Component/basicComp";
+import { fbcolDoc} from "../util/firestore"
+import firestore from "@react-native-firebase/firestore"
+import firebase from "@react-native-firebase/app";
+
+//secret
+import {NAVER_CliENT_ID, NAVER_CLIENT_SECRET} from "../secret";
 
 // begin 화면 import
 import {ProfileScreen} from "./profile";
 import {ChattingScreen} from "./chatting";
 import {CalendarScreen} from "./calendar";
 import {AlarmScreen} from "./alarm";
+import {DetailScreen} from "./main_layout_sub/detail";
+import {RecordSreen} from "./main_layout_sub/record"
 //end 화면 import
-
-const NAVER_CliENT_ID     = "9w8zL8ya88VpwOUOEKfz";
-const NAVER_CLIENT_SECRET = "VVcoPpnoo1";
 
 const color = "#800";
 const size = 25;
 
-function HomeScreen({navigation}) {
+const Library = <Ionicons name="library" size={size} color={color} />;
+const ChatIcon = <Ionicons name="chatbubbles-outline" size={size} color={color}/>;
+const ProfileIcon = <AntDesign name="contacts" size={size} color={color} />;
+const CalenIcon = <AntDesign name="calendar" size={size} color={color} />;
+const AlarmIcon = <AntDesign name="bells" size={size} color={color} />;
 
-  let [bookList,setBookList] = useState([]);
+function SearchSreen() {
+
+  let userObj = auth().currentUser;
+
+  let [bookNm, setBookNm] = useState(null);
+  let [searchBookList, setSearchBookList] = useState([]);
+  //bookInfo
+  let [bI, setBI] = useState({});
 
   useEffect(()=>{
-      fetch("https://openapi.naver.com/v1/search/book?query=All&display=10&d_publ=쌤앤파커스",{
+    fbcolDoc('user','book_info')
+    .then(documentSnapshot => {
+      setBI(documentSnapshot.data());
+    })
+  },[])
+
+  let searchHandle = (pBookNm) => {
+    // console.log("pbookNm",pBookNm);
+    let url = `https://openapi.naver.com/v1/search/book?query=${pBookNm}&display=10`
+    fetch(url,{
       method  :"GET",
       headers :{
         'X-Naver-Client-Id': NAVER_CliENT_ID,
@@ -46,59 +75,231 @@ function HomeScreen({navigation}) {
       })
       .then(function(myJson) {
         let item = myJson;
-        console.log(item);
-        setBookList(item.items);
+        setSearchBookList(item.items);
       });
-  },[]);
-  
-  // Handle user state changes
-  // function onAuthStateChanged(user) {
-  //   setUser(user);
-  //   if (initializing) setInitializing(false);
-  // }
-  // console.log("user",user);
-  // useEffect(() => {
-  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-  //   return subscriber; // unsubscribe on unmount
-  // }, []);
+  }
 
-  // if (initializing) return null;
-
-  // if (!userObj) {
-  //   return (
-  //     <View>
-  //       <Text>Login</Text>
-  //     </View>
-  //   );
-  // }
+  let handleInsert = (items,state,setState) => {
+    setState(!state);
+    
+    //좋아요 버튼 초기값이 false 값인게 맞다면
+    // false => true
+    if(!state){
+      let book = Object.assign(bI,{
+          book_author : items.author,
+          book_img : items.image,
+          book_isbn : items.isbn,
+          book_nm : items.title,
+        })
+      firestore()
+      .collection('user_profile')
+      .doc(userObj.uid)
+      .update({
+        'user_like_book' : firebase.firestore.FieldValue.arrayUnion(book)
+        })
+      .then(() => {
+      });
+    }
+    //
+    // true => false
+    else{
+      fbcolDoc('user_profile',userObj.uid)
+      .then(documentSnapshot => {
+        let likeBookList = documentSnapshot.data().user_like_book;
+        let findBookIndex =  likeBookList.findIndex(data => {
+          return data.book_isbn == items.isbn;
+        });
+        likeBookList.splice(findBookIndex,1);
+        firestore().collection('user_profile').doc(userObj.uid)
+        .update({'user_like_book' :likeBookList})
+      });
+    }
+  }
 
   return (
-    <View>
+    <SafeAreaView style={styles.container}>
+      <View style ={styles.searchTextInput}>
       <TextInput
-          style={styles.textArea}
-          placeholder="검색.."
+          style={{width : "90%"}}
+          placeholder="책 제목을 입력해주세요."
           textAlign={'left'}
-          // onChangeText = {id=>setUserId(id)}
+          //onChangeText func에서 디바운스 사용.
+          onChangeText = {nm=>setBookNm(nm)}
       />
-      {bookList.map((item,idx) => {
-        {console.log("item",item)}
-      return(
-        <Text key={idx}>
-          {item.author}{item.title}
-          </Text>
-          ) 
-      })}
-    </View>
+      <Ionicons name="md-search-outline" size={size} color={styles.appColor.color} onPress={searchHandle.bind(null,bookNm)}/>
+      </View>
+      <ScrollView style={styles.scrollView}>
+      {searchBookList.map((item,idx) => {
+        return(
+          <BView key={idx} idx={idx} item={item} onPress={handleInsert.bind(null, item)}/>
+          )
+        })
+      }
+    </ScrollView>
+    </SafeAreaView>
   );
 }
 
-const Tab = createBottomTabNavigator();
+function BookSearchComp(props){
+  let styleObj = Object.assign({},styles.panelView,{
+    justifyContent: "center",alignItems: "center"});
+  let navigation = props.navigation;
 
-const Library = <Ionicons name="library" size={size} color={color} />;
-const ChatIcon = <Ionicons name="chatbubbles-outline" size={size} color={color}/>;
-const ProfileIcon = <AntDesign name="contacts" size={size} color={color} />;
-const CalenIcon = <AntDesign name="calendar" size={size} color={color} />;
-const AlarmIcon = <AntDesign name="bells" size={size} color={color} />;
+  
+  return (
+      <TouchableOpacity style={styleObj} onPress={()=> navigation.navigate('search')}>
+          <View style={{
+            flexDirection : "row",
+            justifyContent: "center",
+            alignItems: "center",
+            }}>
+            <Ionicons name="md-search-outline"  size={size} color={styles.appColor.color} />
+          <Text style = {{
+              color : styles.appColor.color
+          }} >{props.text}</Text>
+          </View>
+          
+      </TouchableOpacity>
+  )
+}
+
+function onError(error) {
+  console.error(error);
+}
+
+function HomeScreen({navigation, ...props}) {
+
+  let userObj = auth().currentUser;
+
+  let [bookList,setBookList] = useState([]);
+
+  useEffect(()=>{
+    let mounted = true;
+     firestore()
+    .collection('user_profile').doc(userObj.uid)
+    .onSnapshot((QuerySnapshot)=>{
+      if(mounted){
+        setBookList(QuerySnapshot.data().user_like_book)
+      }
+    },onError);
+    return ()=> {mounted = false}
+  },[userObj.uid])
+
+
+  const handleDelete = (items) => {
+    let checkBookIndex = bookList.findIndex( (v) =>  v.book_isbn == items.book_isbn);
+    let removeBookList = bookList;
+    removeBookList.splice(checkBookIndex,1);
+    firestore()
+    .collection('user_profile')
+    .doc(userObj.uid)
+    .update({
+      'user_like_book' :removeBookList
+    })
+    .then((res) => {
+      setBookList(removeBookList);
+    });
+  }
+
+  const handleDetail = (idx,itemList) => {
+    let propData = {
+      idx,
+      itemList,
+      navigation
+    };
+    props.extraData(propData);
+    navigation.navigate('detail');
+  }
+
+  const handleRecord = (idx, itemList) => {
+    let propData = {
+      idx,
+      itemList,
+      navigation
+    };
+
+    //click한 책 정보를 찾아온다.
+    props.extraData(propData);
+    
+    //화면 정상적으로 넘어감.
+    //record Component 생성 후 화면 이동.
+    navigation.navigate('record');
+  }
+  return (
+    // <SafeAreaView key = {"scrollSuper"} style={styles.container}>
+    //   <ScrollView key = {"scroll"} style={styles.scrollView}>
+    //     {bookList.length == 0 
+    //       ? <BookSearchComp key={"Search"} text = {'등록된 책이 없습니다.'} navigation={navigation}/>
+    //       : bookList.map((item, idx)=>{
+    //         console.log("idx",item,idx);
+    //         if(bookList.length - 1 == idx) {
+    //           return (
+    //             <>
+    //               <MView key={item.book_isbn} idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
+    //               <BookSearchComp key={idx+"Search"} idx={idx+1} text = {'책을 추가합니다.'} navigation={navigation}/>
+    //             </>
+    //           )
+    //         }
+    //         return(
+    //           <MView key={item.book_isbn} idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
+    //         )
+    //       })
+    //     }
+    //   </ScrollView>
+    // </SafeAreaView>
+    <SafeAreaView key = {"scrollSuper"} style={styles.container}>
+      <ScrollView key = {"scroll"} style={styles.scrollView}>
+        {bookList.length == 0 
+          ? <BookSearchComp key={"Search"} text = {'등록된 책이 없습니다.'} navigation={navigation}/>
+          : bookList.map((item, idx)=>{
+            if(bookList.length - 1 == idx) {
+              return (
+                <View key={item.book_isbn}>
+                  <MView  idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
+                  <BookSearchComp key={idx+"Search"} idx={idx+1} text = {'책을 추가합니다.'} navigation={navigation}/>
+                </View>
+              )
+            }
+            return(
+              <MView key={item.book_isbn} idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
+            )
+          })
+        }
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const HomeStack = createStackNavigator();
+
+function HomeLayout(props){
+  //처음 render 될 때는 책정보가 undefined
+  const [selectedBookInfo, setSelectedBookInfo] = useState(undefined);
+
+  // 상단부 Layout에서 state를 Main컴포넌트 props로 보낸다.
+
+  const handleUpdate4BookInfo = (evt) => {
+    setSelectedBookInfo(evt);
+    //책정보를 업데이트한다.
+  }
+
+  return (
+      <HomeStack.Navigator>
+        <HomeStack.Screen name ="Main" options={{ title: '책 다이어리' }}>
+          {props => <HomeScreen {...props} extraData={handleUpdate4BookInfo}/>}
+        </HomeStack.Screen>
+        <HomeStack.Screen name="detail" options={{ title: '책 다이어리' }} options={{header:{visible:false}}} >
+          {props => <DetailScreen extraData={selectedBookInfo}/>}
+        </HomeStack.Screen>
+        <HomeStack.Screen name="search" component={SearchSreen} options={{header:{visible:false}}} />
+        <HomeStack.Screen name="record"  options={{header:{visible:false}}} >
+          {props => <RecordSreen extraData={selectedBookInfo}/>}
+        </HomeStack.Screen>
+    </HomeStack.Navigator>
+  )
+}
+
+const Tab = createBottomTabNavigator();
 
 export function DetailsScreen() {
  
@@ -109,7 +310,7 @@ export function DetailsScreen() {
           tabBarOptions={{ 
             activeTintColor: '#e91e63',
           }}>
-            <Tab.Screen name="Home" component={HomeScreen}  options={{
+            <Tab.Screen name="Home" component={HomeLayout}  options={{
               tabBarLabel : "Home",
               tabBarIcon : () => (Library)
             }}/>
@@ -131,11 +332,5 @@ export function DetailsScreen() {
             }}/>
           </Tab.Navigator>
       </>
-    //   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    //     <Text>Details Screen</Text>
-    //     <Button
-    //       title="Go to Details... again"
-    //       onPress={()=>alert("test")}/>
-    //   </View>
     )
   }

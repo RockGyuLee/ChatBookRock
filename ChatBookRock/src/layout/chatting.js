@@ -6,13 +6,21 @@ import {
     Text,
     TextInput,
     StatusBar,
-    Button
+    Button,
+    Image
   } from 'react-native';
-
+  
   export function ChattingScreen({navigation}){
     return (
-        <View>
-          <Text>{"채팅화면입니다."}</Text>
-        </View>
+      <View style={{
+        width : "100%",
+        height : "100%",
+        alignItems : "center",
+        justifyContent : "center"
+    }}>
+        <Image 
+          source={require("../../images/ic_develop.png")}
+        />
+    </View>
         )
   }

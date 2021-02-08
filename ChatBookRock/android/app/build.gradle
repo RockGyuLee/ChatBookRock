@@ -126,7 +126,7 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion targetSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     compileOptions {
@@ -212,6 +212,8 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
