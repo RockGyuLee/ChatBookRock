@@ -51,7 +51,7 @@ export function BView({idx, item, onPress}){
 export function MView({idx, item, onTouchAble, onDeletePress, onRecordPress, itemList}){
 
     let [clickable, setClickAble] = useState(false);
-    let handleDeletePress = onDeletePress;
+
 
     let handleMove2Detail = () => {
         //onTouchAble( idx, itemList)

@@ -158,7 +158,7 @@ export function RecordSreen(props){
          : imageUri.map((data, idx) => {
             if(imageUri.length - 1 == idx){
               return (
-                <>
+                <View key = {idx} style={{width : "100%" ,flexDirection : "row" }}>
                   <TouchableOpacity
                     style={{
                     margin : 5,
@@ -193,7 +193,7 @@ export function RecordSreen(props){
                   >
                     <AntDesign name={"camerao"} size={20} color={AppColor.color}/>
                   </TouchableOpacity>
-                </>
+                </View>
               )
             }
             return(

@@ -107,7 +107,7 @@ function LoginScreen({ navigation }) {
   // }))
 
   useEffect(()=>{
-    SplashScreen.hide();
+    // SplashScreen.hide();
     fbcolDoc('user','basic_user_info')
     .then(documentSnapshot => {
       setBUI(documentSnapshot.data());
@@ -277,7 +277,7 @@ function App() {
       <Stack.Navigator >
         <Stack.Screen name="Home" component={LoginScreen} options={{ title: 'Login/Sign' }}>
         </Stack.Screen>
-        <Stack.Screen name="Main" component={DetailsScreen}  options={{title: '책방'}}/>
+        <Stack.Screen name="Main" component={DetailsScreen}  options={{title: '책동산'}}/>
         <Stack.Screen name="Sign" component={SignUp} options={{ title: '회원가입' }}/>
       </Stack.Navigator>
     </NavigationContainer>

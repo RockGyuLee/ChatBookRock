@@ -57,7 +57,6 @@ const email_pattern = /[@]/gi;
 export function SignUp(props){
   // email 정규식 패턴
   let navigation = props.navigation;
-  console.log("navigation",navigation);
   const [bUI, setBUI ] = useState({});
 
   let [state, dispatch] = useReducer(reducer,initialState);
@@ -132,7 +131,7 @@ export function SignUp(props){
         justifyContent : "center",
       }}>
         <Image 
-          source={require("../../images/ic_launcher_rom.png")}
+          source={require("../../images/ic_launcher_rb.png")}
         />
       </View>
       <Input

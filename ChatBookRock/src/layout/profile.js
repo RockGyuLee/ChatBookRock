@@ -6,7 +6,8 @@ import {
     Text,
     TextInput,
     StatusBar,
-    Button
+    Button,
+    Image
   } from 'react-native';
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore"
@@ -35,8 +36,15 @@ import firestore from "@react-native-firebase/firestore"
     console.log("userDocument",userDocument);
   
     return (
-    <View>
-      <Text>{user}</Text>
+      <View style={{
+        width : "100%",
+        height : "100%",
+        alignItems : "center",
+        justifyContent : "center"
+    }}>
+        <Image 
+          source={require("../../images/ic_develop.png")}
+        />
     </View>
     )
   }

@@ -226,6 +226,27 @@ function HomeScreen({navigation, ...props}) {
     navigation.navigate('record');
   }
   return (
+    // <SafeAreaView key = {"scrollSuper"} style={styles.container}>
+    //   <ScrollView key = {"scroll"} style={styles.scrollView}>
+    //     {bookList.length == 0 
+    //       ? <BookSearchComp key={"Search"} text = {'등록된 책이 없습니다.'} navigation={navigation}/>
+    //       : bookList.map((item, idx)=>{
+    //         console.log("idx",item,idx);
+    //         if(bookList.length - 1 == idx) {
+    //           return (
+    //             <>
+    //               <MView key={item.book_isbn} idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
+    //               <BookSearchComp key={idx+"Search"} idx={idx+1} text = {'책을 추가합니다.'} navigation={navigation}/>
+    //             </>
+    //           )
+    //         }
+    //         return(
+    //           <MView key={item.book_isbn} idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
+    //         )
+    //       })
+    //     }
+    //   </ScrollView>
+    // </SafeAreaView>
     <SafeAreaView key = {"scrollSuper"} style={styles.container}>
       <ScrollView key = {"scroll"} style={styles.scrollView}>
         {bookList.length == 0 
@@ -233,14 +254,14 @@ function HomeScreen({navigation, ...props}) {
           : bookList.map((item, idx)=>{
             if(bookList.length - 1 == idx) {
               return (
-                <>
-                  <MView key={idx+item.book_isbn} idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
+                <View key={item.book_isbn}>
+                  <MView  idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
                   <BookSearchComp key={idx+"Search"} idx={idx+1} text = {'책을 추가합니다.'} navigation={navigation}/>
-                </>
+                </View>
               )
             }
             return(
-              <MView key={idx+item.book_isbn} idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
+              <MView key={item.book_isbn} idx={idx} itemList={bookList} item={item} onTouchAble={handleDetail} onRecordPress={handleRecord.bind(null,idx)} onDeletePress={handleDelete.bind(null, item)}/>
             )
           })
         }
@@ -265,14 +286,14 @@ function HomeLayout(props){
   return (
       <HomeStack.Navigator>
         <HomeStack.Screen name ="Main" options={{ title: '책 다이어리' }}>
-          {props => <HomeScreen key={"1"} {...props} extraData={handleUpdate4BookInfo}/>}
+          {props => <HomeScreen {...props} extraData={handleUpdate4BookInfo}/>}
         </HomeStack.Screen>
         <HomeStack.Screen name="detail" options={{ title: '책 다이어리' }} options={{header:{visible:false}}} >
-          {props => <DetailScreen key={"1-1"} extraData={selectedBookInfo}/>}
+          {props => <DetailScreen extraData={selectedBookInfo}/>}
         </HomeStack.Screen>
         <HomeStack.Screen name="search" component={SearchSreen} options={{header:{visible:false}}} />
         <HomeStack.Screen name="record"  options={{header:{visible:false}}} >
-          {props => <RecordSreen key={"1-2"} extraData={selectedBookInfo}/>}
+          {props => <RecordSreen extraData={selectedBookInfo}/>}
         </HomeStack.Screen>
     </HomeStack.Navigator>
   )
